@@ -1,6 +1,6 @@
 CXX = g++ -ggdb -std=c++11
 BINNAME = Splache
-LINKS = -lpthread
+LINKS=
 OBJ = object/Splache.o \
 	object/Socket.o \
 	object/HttpResponse.o

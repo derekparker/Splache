@@ -10,7 +10,7 @@ class HttpResponse{
   const char* STATUS = "HTTP/1.1";
   const char* SERVER_HEADER = "Server: Splache/Prerelease (Linux)";
   char* makeResponseBuffer();
-  void appendMovingBuffer(char* buffer, char* stringToAppend);
+  char* appendMovingBuffer(char* buffer, char* stringToAppend);
 public:
   int statusCode;
   //MAKE SURE THESE ARE NULL TERMINATED!!!

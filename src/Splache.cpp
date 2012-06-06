@@ -11,7 +11,6 @@
 #include "Splache.h"
 
 int main(int argc, char* argv[]) {
-    
     /**
      * Let's get the ball rolling!
      */
