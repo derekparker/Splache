@@ -6,6 +6,9 @@
 //  Copyright (c) 2012 Splache. All rights reserved.
 //
 
+#include "HttpResponse.h"
+#include "Socket.h"
+
 #ifndef _Splache_h
 #define _Splache_h
 
