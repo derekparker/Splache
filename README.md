@@ -1,6 +1,6 @@
 Splache
 =======
 
-Collaborators:
-*Derek Parker
-*Kyle Nusbaum
+Collaborators:  
+Derek Parker  
+Kyle Nusbaum  
