@@ -17,6 +17,10 @@
 #include <string>
 #include <arpa/inet.h>
 
+#define MAXHOSTNAME 200;
+#define MAXCONNECTIONS 5;
+#define MAXRECV 500;
+
 class Socket
 {
 private:
