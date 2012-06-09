@@ -13,7 +13,7 @@ using namespace std;
 
 ServerSocket::ServerSocket (int port)
 {
-    if ( ! Socket::creat() ) 
+    if ( ! Socket::create() ) 
     {
         throw SocketException ("Could not create server socket.");
     }
@@ -25,7 +25,7 @@ ServerSocket::ServerSocket (int port)
     
     if (! Socket::listen() )
     {
-        
+        throw SocketException ( "Could not listen to port.");
     }
 }
 
