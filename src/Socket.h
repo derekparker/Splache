@@ -10,16 +10,20 @@
 #define _Socket_class
 
 #include <sys/types.h>
-#inclide <sys/socket.h>
+#include <sys/socket.h>
 #include <netinet/in.h>
 #include <netdb.h>
 #include <unistd.h>
 #include <string>
 #include <arpa/inet.h>
+#include <errno.h>
+#include <fcntl.h>
 
 #define MAXHOSTNAME 200;
 #define MAXCONNECTIONS 5;
 #define MAXRECV 500;
+
+using namespace std;
 
 class Socket
 {
@@ -45,6 +49,6 @@ public:
     
     void set_non_blocking(const bool);
     bool is_valid() const { return m_sock != -1; }
-}
+};
 
 #endif

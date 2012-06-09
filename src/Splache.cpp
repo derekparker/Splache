@@ -6,8 +6,6 @@
 //  Copyright (c) 2012 Splache. All rights reserved.
 //
 
-#include <iostream>
-
 #include "Splache.h"
 
 int main(int argc, char* argv[]) {

@@ -3,7 +3,8 @@ BINNAME = Splache
 LINKS=
 OBJ = object/Splache.o \
 	object/Socket.o \
-	object/HttpResponse.o
+	object/HttpResponse.o \
+	object/HttpRequest.o
 
 all: splache
 
@@ -31,3 +32,5 @@ object/Socket.o : src/Socket.h src/Socket.cpp
 object/HttpResponse.o : src/HttpResponse.h src/HttpResponse.cpp
 	$(CXX) -c src/HttpResponse.cpp -o object/HttpResponse.o
 
+object/HttpRequest.o : src/HttpRequest.h src/HttpRequest.cpp
+	$(CXX) -c src/HttpRequest.cpp -o object/HttpResponse.o

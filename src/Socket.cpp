@@ -7,10 +7,6 @@
 //
 
 #include "Socket.h"
-#include "string.h"
-#include <string.h>
-#include <errno.h>
-#include <fcntl.h>
 
 /**
  * Implementation of the Socket class.
@@ -36,7 +32,7 @@ Socket::~Socket()
 
 bool Socket::create()
 {
-    m_sock = socket(AD_INET,
+    m_sock = socket(AF_INET,
                     SOCK_STREAM,
                     0);
     if (! is_valid() )
