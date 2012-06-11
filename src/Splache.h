@@ -11,6 +11,7 @@
 #include "HttpResponse.h"
 #include "HttpRequest.h"
 #include "Socket.h"
+#include "ServerSocket.h"
 
 #ifndef _Splache_h
 #define _Splache_h
