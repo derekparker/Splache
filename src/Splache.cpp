@@ -13,16 +13,16 @@ int main(int argc, char* argv[]) {
         ServerSocket server(30000);
         
         while (true) {
-            ServerSocket new_sock;
-            server.accept(new_sock);
+            ServerSocket sock;
+            server.accept(sock);
             
             try {
                 while (true) {
                     /* This will send data to the HttpRequest class */
-                    new_sock >> foo; 
+                    sock >> foo; 
                     /* This will send data back to the client
                      using the HttpResponse class */
-                    new_sock << bar;
+                    sock << bar;
                 }
             }
             catch (SocketException&) {}
