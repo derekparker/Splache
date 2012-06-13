@@ -10,6 +10,9 @@
 #define _ServerSocket_class
 
 #include "Socket.h"
+#include "HttpRequest.h"
+#include "HttpResponse.h"
+#include "SocketException.h"
 
 using namespace std;
 
@@ -22,8 +25,10 @@ public:
     
     const ServerSocket& operator << (const string&) const;
     const ServerSocket& operator >> (string&) const;
-    
+    const ServerSocket& operator << (const HttpResponse&) const;
+    const ServerSocket& operator >> (HttpRequest&) const;
+
     void accept (ServerSocket&);
-}
+};
 
 #endif

@@ -15,13 +15,15 @@
 #include <netdb.h>
 #include <unistd.h>
 #include <string>
+#include <string.h>
 #include <arpa/inet.h>
 #include <errno.h>
 #include <fcntl.h>
+#include <stdio.h>
 
-#define MAXHOSTNAME 200;
-#define MAXCONNECTIONS 5;
-#define MAXRECV 500;
+#define MAXHOSTNAME 200
+#define MAXCONNECTIONS 5
+#define MAXRECV 500
 
 using namespace std;
 

@@ -19,10 +19,15 @@ int main(int argc, char* argv[]) {
             try {
                 while (true) {
                     /* This will send data to the HttpRequest class */
-                    new_sock >> foo; 
-                    /* This will send data back to the client
+		    HttpRequest request;
+		    HttpResponse response;
+		    new_sock >> request; 
+                    
+		    //PROCESS REQUEST >> RESPONSE//
+		    
+		    /* This will send data back to the client
                      using the HttpResponse class */
-                    new_sock << bar;
+                    new_sock << response;
                 }
             }
             catch (SocketException&) {}

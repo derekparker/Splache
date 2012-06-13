@@ -7,7 +7,6 @@
 //
 
 #include "ServerSocket.h"
-#include "SocketException.h"
 
 using namespace std;
 
@@ -57,6 +56,25 @@ const ServerSocket& ServerSocket::operator >> (string& s) const
     
     return *this;
 }
+
+const ServerSocket& ServerSocket::operator << (const HttpResponse& response) const
+{
+  char *responseString = response->makeResponseBuffer();
+  string s(responseString);
+  free(responseString);
+  this << s;
+  return *this;
+  
+}
+
+const ServerSocket& ServerSocket::operator >> (HttpRequest& request) const
+{
+  String s;
+  this >> s;
+  request = HttpRequest(s.c_str());
+  return *this;
+}
+
 
 void ServerSocket::accept(ServerSocket& sock)
 {
