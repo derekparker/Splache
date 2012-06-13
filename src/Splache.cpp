@@ -13,8 +13,8 @@ int main(int argc, char* argv[]) {
         ServerSocket server(30000);
         
         while (true) {
-            ServerSocket new_sock;
-            server.accept(new_sock);
+            ServerSocket sock;
+            server.accept(sock);
             
             try {
                 while (true) {
