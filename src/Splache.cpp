@@ -21,13 +21,13 @@ int main(int argc, char* argv[]) {
                     /* This will send data to the HttpRequest class */
 		    HttpRequest request;
 		    HttpResponse response;
-		    new_sock >> request; 
+		    sock >> request; 
                     
 		    //PROCESS REQUEST >> RESPONSE//
 		    
 		    /* This will send data back to the client
                      using the HttpResponse class */
-                    new_sock << response;
+                    sock << response;
                 }
             }
             catch (SocketException&) {}
