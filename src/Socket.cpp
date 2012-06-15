@@ -89,7 +89,7 @@ bool Socket::accept(Socket& new_socket) const
 {
     int addr_length = sizeof(m_addr);
     new_socket.m_sock = ::accept(m_addr);
-    new_socket.m_sock = ::accept(m_sock, (sockadr *) &m_addr, (socklen_t *) &addr_length);
+    new_socket.m_sock = ::accept(m_sock, (sockaddr *) &m_addr, (socklen_t *) &addr_length);
     
     if (new_socket.m_sock <= 0)
         return false;
