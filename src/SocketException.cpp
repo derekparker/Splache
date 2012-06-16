@@ -12,6 +12,6 @@
 SocketException::logExceptionToFile()
 {
     Log logger;
-    logger.logException(m_s)
+    logger.logException(m_s);
     delete logger;
 }
