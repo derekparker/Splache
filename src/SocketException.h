@@ -10,6 +10,7 @@
 #define _SocketException_class
 
 #include <string>
+#include "Log.h"
 
 class SocketException
 {
@@ -17,7 +18,7 @@ public:
     SocketException(std::string s) : m_s(s){};
     ~SocketException(){};
     
-    std::string description(){return m_s;}
+    void logExceptionToFile();
 
 private:
     std::string m_s;
