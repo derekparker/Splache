@@ -65,7 +65,6 @@ ServerSocket& ServerSocket::operator << (HttpResponse* response)
     }
   char *responseString = response->makeResponseBuffer();
   string s(responseString);
-  free(responseString);
   *this << s;
   return *this;
   
@@ -75,7 +74,7 @@ ServerSocket& ServerSocket::operator >> (HttpRequest* request)
 {
   string s;
   *this >> s;
-  request = new HttpRequest((char*)s.c_str());
+  request->setRequest((char*)s.c_str());
   return *this;
 }
 

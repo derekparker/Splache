@@ -1,5 +1,12 @@
 #include "HttpResponse.h"
 
+HttpResponse::~HttpResponse(){
+  if(headers != NULL)
+    free(headers);
+  if(body != NULL)
+    free(body);
+}
+
 void HttpResponse::sendResponse(int socket){
   char* responseBuffer = makeResponseBuffer();
   //send responseBuffer 
@@ -54,4 +61,12 @@ void HttpResponse::addHeader(char* newHeader){
       headers = buff;
     }
   
+}
+
+void HttpResponse::setBody(char* newBody){
+  if(body != NULL)
+    free(body);
+  body = (char*) malloc(strlen(newBody)+1);
+  strcpy(body,newBody);
+  return;
 }

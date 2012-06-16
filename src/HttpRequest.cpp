@@ -4,9 +4,14 @@ HttpRequest::HttpRequest(char* buffer){
   setRequest(buffer);
 }
 
+HttpRequest::~HttpRequest(){
+  if(request != NULL)
+    free(request);
+}
+
 void HttpRequest::setRequest(char* buffer){
   request = (char*)malloc(strlen(buffer)+1);
-  strcat(request,buffer);
+  strcpy(request,buffer);
 
   char* placeholder;
 
@@ -15,20 +20,7 @@ void HttpRequest::setRequest(char* buffer){
   placeholder = cutString(file, (char*)" ");
   host = cutString(placeholder, (char*)"Host");
   host += 6;
-  placeholder = cutString(host, (char*)"\r");
-  
-
-  /*
-  char* placeholder = strstr(request, " ");
-  placeholder[0] = 0;
-  file = placeholder+1;
-  placeholder = strstr(file, " ");
-  placeholder[0] = 0;
-  host = strstr(request, "Host");
-  host += 6;
-  placeholder = strstr(host,(char*)13);
-  placeholder[0]=0;
-  */
+  cutString(host, (char*)"\r");
 }
 
 char* HttpRequest::cutString(char * inStr, char * cutBy)

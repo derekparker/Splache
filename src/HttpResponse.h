@@ -11,13 +11,14 @@ class HttpResponse{
   const char* SERVER_HEADER = "Server: Splache/Prerelease (Linux)";
   char* appendMovingBuffer(char* buffer, char* stringToAppend);
   char* headers;
-public:
-  int statusCode;
-  //MAKE SURE THESE ARE NULL TERMINATED!!!
   char* body;
+public:
+  ~HttpResponse();
+  int statusCode;
   char* makeResponseBuffer();
   void sendResponse(int socket);
   void addHeader(char*);
+  void setBody(char*);
 };
 
 #endif

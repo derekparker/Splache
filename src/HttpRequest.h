@@ -13,6 +13,7 @@ class HttpRequest{
   char* file;
   char* host;
   HttpRequest(){}
+  ~HttpRequest();
   HttpRequest(char* buffer);
   void setRequest(char* buffer);
 };
