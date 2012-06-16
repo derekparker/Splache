@@ -42,7 +42,7 @@ public:
     bool bind(const int port);
     bool listen() const;
     bool accept (Socket&) const;
-    
+    bool close (Socket&) const;
     /* Client initialization */
     bool connect (const string host, const int port);
     

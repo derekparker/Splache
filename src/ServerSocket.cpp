@@ -87,3 +87,11 @@ void ServerSocket::accept(ServerSocket& sock)
         throw SocketException("Could not accept socket.");
     }
 }
+
+void ServerSocket::close(ServerSocket& sock)
+{
+  if(! Socket::close(sock) )
+    {
+      throw SocketException("Could not close socket.");
+    }
+}

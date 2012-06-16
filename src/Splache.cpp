@@ -32,6 +32,7 @@ int main(int argc, char* argv[]) {
 		    /* This will send data back to the client
                      using the HttpResponse class */
                     sock << &response;
+		    server.close(sock);
                 }
             }
             catch (SocketException&) {}

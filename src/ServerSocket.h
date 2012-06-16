@@ -29,6 +29,7 @@ public:
     ServerSocket& operator >> (HttpRequest*);
 
     void accept (ServerSocket&);
+    void close (ServerSocket&);
 };
 
 #endif

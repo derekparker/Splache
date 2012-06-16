@@ -96,6 +96,15 @@ bool Socket::accept(Socket& new_socket) const
         return true;
 }
 
+bool Socket::close(Socket& activeSocket) const
+{
+  if(! ::close(activeSocket.m_sock) )
+    {
+      return false;
+    }
+  return true;
+}
+
 bool Socket::send(const std::string s) const
 {
     int status = ::send (m_sock, s.c_str(), s.size(), MSG_NOSIGNAL);
