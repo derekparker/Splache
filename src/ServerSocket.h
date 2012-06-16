@@ -25,8 +25,8 @@ public:
     
     const ServerSocket& operator << (const string&) const;
     const ServerSocket& operator >> (string&) const;
-    const ServerSocket& operator << (const HttpResponse&) const;
-    const ServerSocket& operator >> (HttpRequest&) const;
+    ServerSocket& operator << (HttpResponse*);
+    ServerSocket& operator >> (HttpRequest*);
 
     void accept (ServerSocket&);
 };

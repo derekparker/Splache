@@ -20,14 +20,18 @@ int main(int argc, char* argv[]) {
                 while (true) {
                     /* This will send data to the HttpRequest class */
 		    HttpRequest request;
-		    HttpResponse response;
-		    sock >> request; 
+		    HttpResponse response = HttpResponse();
+		    response.body = (char*)"<html><head></head><body><H1>Hello, World!</H1></body></html>";
+		    response.statusCode = 200;
+		    response.addHeader((char*)"Content-Type: text/html; charset=UTF-8");
+		    response.addHeader((char*)"Connection: close");
+		    sock >> &request; 
                     
 		    //PROCESS REQUEST >> RESPONSE//
 		    
 		    /* This will send data back to the client
                      using the HttpResponse class */
-                    sock << response;
+                    sock << &response;
                 }
             }
             catch (SocketException&) {}

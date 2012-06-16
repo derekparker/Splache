@@ -34,7 +34,7 @@ object/HttpResponse.o : src/HttpResponse.h src/HttpResponse.cpp
 	$(CXX) -c src/HttpResponse.cpp -o object/HttpResponse.o
 
 object/HttpRequest.o : src/HttpRequest.h src/HttpRequest.cpp
-	$(CXX) -c src/HttpRequest.cpp -o object/HttpResponse.o
+	$(CXX) -c src/HttpRequest.cpp -o object/HttpRequest.o
 
 object/ServerSocket.o : src/ServerSocket.h src/ServerSocket.cpp src/Socket.h src/HttpRequest.h src/HttpResponse.h src/SocketException.h
 	$(CXX) -c src/ServerSocket.cpp -o object/ServerSocket.o

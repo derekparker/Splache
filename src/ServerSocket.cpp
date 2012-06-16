@@ -57,28 +57,32 @@ const ServerSocket& ServerSocket::operator >> (string& s) const
     return *this;
 }
 
-const ServerSocket& ServerSocket::operator << (const HttpResponse& response) const
+ServerSocket& ServerSocket::operator << (HttpResponse* response)
 {
+  if( response == NULL )
+    {
+      throw SocketException("Cannot send null response.");
+    }
   char *responseString = response->makeResponseBuffer();
   string s(responseString);
   free(responseString);
-  this << s;
+  *this << s;
   return *this;
   
 }
 
-const ServerSocket& ServerSocket::operator >> (HttpRequest& request) const
+ServerSocket& ServerSocket::operator >> (HttpRequest* request)
 {
-  String s;
-  this >> s;
-  request = HttpRequest(s.c_str());
+  string s;
+  *this >> s;
+  request = new HttpRequest((char*)s.c_str());
   return *this;
 }
 
 
 void ServerSocket::accept(ServerSocket& sock)
 {
-    if (! ServerSocket::accept(sock) )
+    if (! Socket::accept(sock) )
     {
         throw SocketException("Could not accept socket.");
     }
