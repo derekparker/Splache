@@ -1,10 +1,8 @@
-//
-//  Log.h
-//  
-//
-//  Created by Derek Parker and Kyle Nusbaum on 6/15/12.
-//  Copyright (c) 2012 Splache. All rights reserved.
-//
+/**  
+ *  Log.h
+ *
+ *  Created by Derek Parker and Kyle Nusbaum.
+ */
 
 #ifndef _Log_h
 #define _Log_h

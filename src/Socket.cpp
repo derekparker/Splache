@@ -1,10 +1,9 @@
-//
-//  Socket.cpp
-//  
-//
-//  Created by Derek Parker and Kyle Nusbaum on 6/5/12.
-//  Copyright (c) 2012 Splache All rights reserved.
-//
+/**
+ *  Socket.cpp
+ *  
+ *
+ *  Created by Derek Parker and Kyle Nusbaum.
+ */
 
 #include "Socket.h"
 
@@ -14,9 +13,6 @@
  * recv(), bind(), etc... but it wraps the standard function calls
  * in a method with special conditionals and then calls the original
  * functions that are living within the global namespace.
- *
- * This isn't completely finished yet, still a work in progress, but
- * hopefully these classes can get us moving in the right direction.
  */
 
 Socket::Socket() : m_sock(-1)

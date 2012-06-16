@@ -1,3 +1,8 @@
+/**  
+ *
+ *  Created by Derek Parker and Kyle Nusbaum.
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

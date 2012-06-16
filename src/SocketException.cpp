@@ -1,10 +1,9 @@
-//
-//  SocketException.cpp
-//  
-//
-//  Created by Derek Parker and Kyle Nusbaum on 6/16/12.
-//  Copyright (c) 2012 Splache. All rights reserved.
-//
+/**
+ *  SocketException.cpp
+ *  
+ *
+ *  Created by Derek Parker and Kyle Nusbaum.
+ */
 
 #include <iostream>
 #include "SocketException.h"

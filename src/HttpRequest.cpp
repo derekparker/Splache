@@ -1,3 +1,8 @@
+/**  
+ *
+ *  Created by Derek Parker and Kyle Nusbaum.
+ */
+
 #include "HttpRequest.h"
 
 HttpRequest::HttpRequest(char* buffer){

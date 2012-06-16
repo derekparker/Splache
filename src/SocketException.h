@@ -1,10 +1,9 @@
-//
-//  SocketException.h
-//  
-//
-//  Created by Derek Parker and Kyle Nusbaum on 6/5/12.
-//  Copyright (c) 2012 Splache. All rights reserved.
-//
+/**
+ *  SocketException.h
+ *  
+ *
+ *  Created by Derek Parker and Kyle Nusbaum.
+ */
 
 #ifndef _SocketException_class
 #define _SocketException_class

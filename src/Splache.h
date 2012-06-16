@@ -1,10 +1,9 @@
-//
-//  Splache.h
-//  
-//
-//  Created by Derek Parker and Kyle Nusbaum.
-//  Copyright (c) 2012 Splache. All rights reserved.
-//
+/**
+ *  Splache.h
+ *  
+ *
+ *  Created by Derek Parker and Kyle Nusbaum.
+ */
 
 #include <iostream>
 
