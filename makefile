@@ -24,14 +24,14 @@ splache : pre-build $(OBJ)
 	-@rm $(BINNAME)
 	ln -s bin/$(BINNAME) $(BINNAME)
 
-object/Splache.o : src/Splache.h src/Splache.cpp src/Socket.h src/HttpResponse.h src/HttpRequest.h src/ServerSocket.h src/SocketException.h
+object/Splache.o : src/Splache.h src/Splache.cpp src/Socket.h src/HttpResponse.h src/HttpRequest.h src/ServerSocket.h src/SocketException.h src/Log.h
 	$(CXX) -c src/Splache.cpp -o object/Splache.o
 
 object/Socket.o : src/Socket.h src/Socket.cpp
 	$(CXX) -c src/Socket.cpp -o object/Socket.o
     
-object/Socket.o : /Socket.h src/Socket.cpp
-	$(CXX) -c src/Socket.cpp -o object/Socket.o
+object/Log.o : src/Log.h src/Log.cpp
+	$(CXX) -c src/Log.cpp -o object/Log.o
 
 object/HttpResponse.o : src/HttpResponse.h src/HttpResponse.cpp
 	$(CXX) -c src/HttpResponse.cpp -o object/HttpResponse.o
