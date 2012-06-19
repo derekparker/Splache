@@ -29,6 +29,9 @@ object/Splache.o : src/Splache.h src/Splache.cpp src/Socket.h src/HttpResponse.h
 
 object/Socket.o : src/Socket.h src/Socket.cpp
 	$(CXX) -c src/Socket.cpp -o object/Socket.o
+    
+object/Socket.o : /Socket.h src/Socket.cpp
+	$(CXX) -c src/Socket.cpp -o object/Socket.o
 
 object/HttpResponse.o : src/HttpResponse.h src/HttpResponse.cpp
 	$(CXX) -c src/HttpResponse.cpp -o object/HttpResponse.o
