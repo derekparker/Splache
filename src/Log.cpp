@@ -9,12 +9,12 @@
 
 Log::Log(char* logfile)
 {
-    m_strea.open(logfile);
+    m_stream.open(logfile);
 }
 
 Log::logException(char* exceptionThrown)
 {
-    m_stream << getDateTime() << exceptionThrown << endl;
+    m_stream << getDateTime() << ": " << exceptionThrown << endl;
 }
 
 Log::getDateTime()
@@ -22,7 +22,7 @@ Log::getDateTime()
     time_t now = time(0);
     struct tm t;
     char buf[80];
-    tstruct = *localtime(&now);
+    t = *localtime(&now);
     
     strftime(buf, sizeof(buf), "%Y-%m-%d.%X", &t);
     
