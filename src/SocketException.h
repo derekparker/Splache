@@ -17,11 +17,10 @@ public:
     SocketException(std::string s) : m_s(s){};
     ~SocketException(){};
     
-    void logExceptionToFile();
+    void logExceptionToFile(Log& logger);
 
 private:
-    std::string m_s;
-    
+    const std::string m_s;
 };
 
 
