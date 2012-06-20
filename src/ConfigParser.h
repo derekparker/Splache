@@ -8,6 +8,8 @@
 #define _ConfigParser_h
 #include <map>
 #include <string>
+#include <iostream>
+#include <fstream>
 
 /**
  * Class to parse through the config file and
@@ -23,16 +25,16 @@
 class ConfigParser
 {
 private:
-    map<std::string, std::string> config;
     const char* PATH_TO_CONFIG = ""; // Going to change this based off of a relative path to config file.
+    char buf[1024]
+    char ch = ' '
+    char key[24]
+    char val[24];
     
 public:
     ConfigParser();
     ~ConfigParser();
     
-    void parseConfigFile();
-    
-    std::string getConfigValueByKey(std::string key);
+    void parseConfigFile(map<std::string, std::string>& configMap);
 }
-
 #endif
