@@ -23,7 +23,7 @@ ConfigParser::parseConfigFile(map<std::string, std::string>& configMap)
         if (ch != '#' && ch != '\n')
         {
             config.getline(buf, sizeof(buf));
-            sscanf(buf, "%s %*s %s", key, val);
+            sscanf(buf, "%32s %*s %32s", key, val);
             configMap[key] = val;
         }
         config.ignore(sizeof(buf),'\n');
