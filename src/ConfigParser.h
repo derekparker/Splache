@@ -21,10 +21,6 @@
  * best way to figure out the relative path
  * to the config file.
  *
- * * THIS CODE IS NOT SAFE FOR PRODUCTION!
- * * I STILL HAVE TO IMPLEMENT SOME BOUNDS
- * * CHECKING DURING THE PARSING!
- *
  */
 
 class ConfigParser
@@ -33,8 +29,8 @@ private:
     const char* PATH_TO_CONFIG = ""; // Going to change this based off of a relative path to config file.
     char buf[1024];
     char ch = ' ';
-    char key[24]; // Value will change
-    char val[24]; // Value will change
+    char key[32];
+    char val[32];
     
 public:
     ConfigParser();
