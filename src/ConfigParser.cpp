@@ -20,7 +20,7 @@ ConfigParser::parseConfigFile(map<std::string, std::string>& configMap)
     while ( !config.eof() )
     {
         ch = config.get();
-        if (ch != '\n')
+        if (ch != '#' && ch != '\n')
         {
             config.getline(buf, sizeof(buf));
             sscanf(buf, "%s %*s %s", key, val);
