@@ -27,10 +27,11 @@ class ConfigParser
 {
 private:
     const char* PATH_TO_CONFIG = ""; // Going to change this based off of a relative path to config file.
+    const int MAX_SIZE = 33; // 32 for string + 1 for null terminator
     char buf[1024];
     char ch = ' ';
-    char key[32];
-    char val[32];
+    char key[MAX_SIZE];
+    char val[MAX_SIZE];
     
 public:
     ConfigParser();
