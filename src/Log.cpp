@@ -4,20 +4,32 @@
  *  Created by Derek Parker and Kyle Nusbaum.
  */
 
-#include <iostream>
 #include "Log.h"
+
+using namespace std;
 
 Log::Log(char* logfile)
 {
-    m_stream.open(logfile);
+  m_stream.open(logfile, ios::app);
+    if(!m_stream.is_open())
+      {
+	printf("Could not open logfile: %s\n",logfile);
+      }
+    else printf("%s opened for log.\n",logfile);
 }
 
-Log::logException(char* exceptionThrown)
+void Log::logException(char* exceptionThrown)
 {
-    m_stream << getDateTime() << ": " << exceptionThrown << endl;
+  m_stream << "Exception Thrown: " << getDateTime() << ": " << exceptionThrown << endl;
 }
 
-Log::getDateTime()
+void Log::writeLog(char* strToWrite)
+{
+  m_stream << strToWrite << endl;
+  m_stream.flush();
+}
+
+const string  Log::getDateTime()
 {
     time_t now = time(0);
     struct tm t;
@@ -33,3 +45,9 @@ Log::~Log()
 {
     m_stream.close();
 }
+
+void Log::flush()
+{
+  m_stream.flush();
+}
+

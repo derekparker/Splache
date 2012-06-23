@@ -8,7 +8,7 @@
 #include <iostream>
 #include "SocketException.h"
 
-SocketException::logExceptionToFile(Log& logger)
+void SocketException::logExceptionToFile(Log& logger)
 {
-    logger.logException(m_s);
+  logger.logException((char*)m_s.c_str());
 }

@@ -17,6 +17,7 @@ using namespace std;
 
 class ServerSocket : private Socket
 {
+  Log *logger;
 public:
     ServerSocket (int port);
     ServerSocket (){};
@@ -29,6 +30,8 @@ public:
 
     void accept (ServerSocket&);
     void close (ServerSocket&);
+    sockaddr_in remoteAddr(){return Socket::remoteAddr();}
+    void setLogger(Log* logger){this->logger = logger;}
 };
 
 #endif

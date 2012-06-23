@@ -13,6 +13,7 @@
 #include "ServerSocket.h"
 #include "SocketException.h"
 #include "ConfigValues.h"
+#include "Log.h"
 
 #ifndef _Splache_h
 #define _Splache_h

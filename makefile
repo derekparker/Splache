@@ -5,7 +5,9 @@ OBJ = object/Splache.o \
 	object/Socket.o \
 	object/HttpResponse.o \
 	object/HttpRequest.o \
-	object/ServerSocket.o
+	object/ServerSocket.o \
+	object/Log.o \
+	object/SocketException.o
 
 all: splache
 
@@ -24,7 +26,7 @@ splache : pre-build $(OBJ)
 	-@rm $(BINNAME)
 	ln -s bin/$(BINNAME) $(BINNAME)
 
-object/Splache.o : src/Splache.h src/Splache.cpp src/Socket.h src/HttpResponse.h src/HttpRequest.h src/ServerSocket.h src/SocketException.h src/Log.h
+object/Splache.o : src/Splache.h src/Splache.cpp src/Socket.h src/HttpResponse.h src/HttpRequest.h src/ServerSocket.h src/SocketException.h src/Log.h src/ConfigValues.h
 	$(CXX) -c src/Splache.cpp -o object/Splache.o
 
 object/Socket.o : src/Socket.h src/Socket.cpp
@@ -41,3 +43,6 @@ object/HttpRequest.o : src/HttpRequest.h src/HttpRequest.cpp
 
 object/ServerSocket.o : src/ServerSocket.h src/ServerSocket.cpp src/Socket.h src/HttpRequest.h src/HttpResponse.h src/SocketException.h
 	$(CXX) -c src/ServerSocket.cpp -o object/ServerSocket.o
+
+object/SocketException.o : src/SocketException.h src/SocketException.o src/Log.h
+	$(CXX) -c src/SocketException.cpp -o object/SocketException.o

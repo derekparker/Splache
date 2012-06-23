@@ -7,12 +7,19 @@
 
 #include "Splache.h"
 
+/*TEMPORARY*/
+#include <sys/socket.h>
+#include <netinet/in.h>
+
 int main(int argc, char* argv[]) 
 {
     try 
     {
         ServerSocket server(30000);
         ServerSocket sock;
+	char* PATH_TO_TRAFFICLOG = "./logs/splache.traffic";
+        Log logger(PATH_TO_TRAFFICLOG);
+
         while (true) 
         {
             server.accept(sock);
@@ -26,8 +33,13 @@ int main(int argc, char* argv[])
                 response.statusCode = 200;
                 response.addHeader((char*)"Content-Type: text/html; charset=UTF-8");
                 response.addHeader((char*)"Connection: close");
-                sock >> &request; 
-              
+                
+		sock >> &request;
+		logger 
+		  << logger.getDateTime() 
+		  << " Remote: " << inet_ntoa(server.remoteAddr().sin_addr) 
+		  << " requested " << request.file << endl;
+	        
                 //PROCESS REQUEST >> RESPONSE//
 	      
                 /* This will send data back to the client
@@ -42,10 +54,13 @@ int main(int argc, char* argv[])
     
     catch (SocketException& e) 
     {
-        Log logger(PATH_TO_LOGFILE); // PATH_TO_LOGFILE will be replaced with a configparser class member <map>
+      char* PATH_TO_LOGFILE = "./logs/splache.log";
+        Log logger(PATH_TO_LOGFILE); 
+	// PATH_TO_LOGFILE will be replaced with a configparser class member <map>
         e.logExceptionToFile(logger);
-        delete logger;
+        //delete logger;
     }
     
     return 0;
 }
+
