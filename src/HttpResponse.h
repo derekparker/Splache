@@ -15,15 +15,17 @@ class HttpResponse{
   const char* STATUS = "HTTP/1.1";
   const char* SERVER_HEADER = "Server: Splache/Prerelease (Linux)";
   char* appendMovingBuffer(char* buffer, char* stringToAppend);
+  char* appendMovingBuffer(char* buffer, char* stringToAppend, int length);
   char* headers;
   char* body;
+  int contentLength;
 public:
   ~HttpResponse();
   int statusCode;
-  char* makeResponseBuffer();
-  void sendResponse(int socket);
+  int makeResponseBuffer(char**);
+  //void sendResponse(int socket);
   void addHeader(char*);
-  void setBody(char*);
+  void setBody(char*,int);
 };
 
 #endif

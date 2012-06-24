@@ -46,7 +46,7 @@ object/HttpRequest.o : src/HttpRequest.h src/HttpRequest.cpp
 object/ServerSocket.o : src/ServerSocket.h src/ServerSocket.cpp src/Socket.h src/HttpRequest.h src/HttpResponse.h src/SocketException.h
 	$(CXX) -c src/ServerSocket.cpp -o object/ServerSocket.o
 
-object/SocketException.o : src/SocketException.h src/SocketException.o src/Log.h
+object/SocketException.o : src/SocketException.h src/SocketException.cpp src/Log.h
 	$(CXX) -c src/SocketException.cpp -o object/SocketException.o
 
 object/HttpProcessor.o : src/HttpProcessor.h src/HttpProcessor.cpp src/HttpRequest.h src/HttpResponse.h

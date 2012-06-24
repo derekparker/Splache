@@ -11,7 +11,7 @@ HttpResponse::~HttpResponse(){
   if(body != NULL)
     free(body);
 }
-
+/*
 void HttpResponse::sendResponse(int socket){
   char* responseBuffer = makeResponseBuffer();
   //send responseBuffer 
@@ -20,10 +20,10 @@ void HttpResponse::sendResponse(int socket){
   printf("%s",responseBuffer);
   free(responseBuffer);
 }
-
-char* HttpResponse::makeResponseBuffer(){
+*/
+int HttpResponse::makeResponseBuffer(char** responseString){
   //+11 : 3 for status code, 6 for three newlines, one for a space, and one for null term. 
-  int length = strlen(STATUS) + strlen(SERVER_HEADER) + strlen(headers) + strlen(body) + 13;
+  int length = strlen(STATUS) + strlen(SERVER_HEADER) + strlen(headers) + contentLength + 12;
   char* responseBuffer = (char*)malloc(length);
   char* movingBuffer = responseBuffer;
   char charStatusCode[4];
@@ -37,14 +37,22 @@ char* HttpResponse::makeResponseBuffer(){
   movingBuffer = appendMovingBuffer(movingBuffer,(char *)"\r\n");
   movingBuffer = appendMovingBuffer(movingBuffer,headers);
   movingBuffer = appendMovingBuffer(movingBuffer,(char *)"\r\n\r\n");
-  movingBuffer = appendMovingBuffer(movingBuffer,body);
+  movingBuffer = appendMovingBuffer(movingBuffer,body,contentLength);
 
-  return responseBuffer;
+  //return responseBuffer;
+  *responseString = responseBuffer;
+  return length;
 }
 
 char* HttpResponse::appendMovingBuffer(char* buffer, char* stringToAppend){
   strcpy(buffer,stringToAppend);
   return buffer + strlen(stringToAppend);
+}
+
+char* HttpResponse::appendMovingBuffer(char* buffer, char* stringToAppend, int length)
+{
+  memcpy(buffer, stringToAppend, length);
+  return buffer + length;
 }
 
 void HttpResponse::addHeader(char* newHeader){
@@ -68,10 +76,12 @@ void HttpResponse::addHeader(char* newHeader){
   
 }
 
-void HttpResponse::setBody(char* newBody){
+void HttpResponse::setBody(char* newBody, int contentLength){
   if(body != NULL)
     free(body);
-  body = (char*) malloc(strlen(newBody)+1);
-  strcpy(body,newBody);
+  //body = (char*) malloc(strlen(newBody)+1);
+  this->contentLength = contentLength;
+  body = (char*) malloc(contentLength);
+  memcpy(body, newBody, contentLength);
   return;
 }

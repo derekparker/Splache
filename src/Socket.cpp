@@ -110,6 +110,15 @@ bool Socket::send(const std::string s) const
         return true;
 }
 
+bool Socket::send(const char* data, const int size) const
+{
+  int status = ::send(m_sock, data, size, MSG_NOSIGNAL);
+  if(status == -1)
+    return false;
+  else
+    return true;
+}
+
 int Socket::recv (std::string& s) const
 {
     char buf[MAXRECV + 1];

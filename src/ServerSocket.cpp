@@ -62,9 +62,13 @@ ServerSocket& ServerSocket::operator << (HttpResponse* response)
     {
       throw SocketException("Cannot send null response.");
     }
-  char *responseString = response->makeResponseBuffer();
-  string s(responseString);
-  *this << s;
+  char *responseString;
+  int l = response->makeResponseBuffer(&responseString);
+  if (! Socket::send(responseString, l) )
+    {
+      throw SocketException("Could not write to socket.");
+    }
+  
   return *this;
   
 }

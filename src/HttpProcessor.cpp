@@ -34,24 +34,39 @@ void HttpProcessor::makeResponse(HttpResponse &response)
     char* filepath = getFilename(request->file);
     char* fileExt = getFileExtension(filepath);
 
-    std::ifstream file(filepath, std::ifstream::binary);
-    if(!file.is_open())
+    FILE * file; //(filepath, std::ifstream::binary);
+    file = fopen(filepath, "rb");
+    if( file == NULL )
       {
 	response = HttpResponse();
-	response.setBody((char*)"<html><head></head><body><H1>404</H1></body></html>");
+	char* body = (char*)"<html><head></head><body><H1>404</H1></body></html>";
+	response.setBody(body, strlen(body));
 	response.statusCode = 404;
 	response.addHeader((char*)"Content-Type: text/html; charset=UTF-8");
 	response.addHeader((char*)"Connection: close");
       }
     else
       {
-	std::string str((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());	
+	fseek(file, 0, SEEK_END);
+	int size = ftell(file);
+	rewind(file);
+
+	char* fileBuff = (char*)malloc(size);
+
+	fread(fileBuff, size, 1, file);
+	fclose(file);
+	
+	//std::string str((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());	
+	
 	response = HttpResponse();
-	response.setBody((char*)str.c_str());
+	response.setBody((char*)fileBuff,size);
+	free(fileBuff);
 	response.statusCode = 200;
-	response.addHeader((char*)"Content-Type: text/html; charset=UTF-8");
+	if(strcmp(fileExt,"jpg") == 0)
+	  response.addHeader((char*)"Content-Type: image/jpg;");
+	else
+	  response.addHeader((char*)"Content-Type: text/html; charset=UTF-8");
 	response.addHeader((char*)"Connection: close");
-	file.close();
      }
     free(filepath);
 }

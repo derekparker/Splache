@@ -47,6 +47,7 @@ public:
     
     /* Data Transmission */
     bool send(const string) const;
+    bool send(const char*, const int) const;
     int recv(string&) const;
     
     void set_non_blocking(const bool);
