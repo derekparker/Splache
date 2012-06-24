@@ -68,7 +68,7 @@ ServerSocket& ServerSocket::operator << (HttpResponse* response)
     {
       throw SocketException("Could not write to socket.");
     }
-  
+  free(responseString);
   return *this;
   
 }
