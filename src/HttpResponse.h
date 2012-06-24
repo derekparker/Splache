@@ -18,14 +18,19 @@ class HttpResponse{
   char* appendMovingBuffer(char* buffer, char* stringToAppend, int length);
   char* headers;
   char* body;
+  int bodyLength;
+  char* response;
   int contentLength;
-public:
+ public:
+  HttpResponse();
   ~HttpResponse();
   int statusCode;
-  int makeResponseBuffer(char**);
+  void makeResponseBuffer();
   //void sendResponse(int socket);
   void addHeader(char*);
   void setBody(char*,int);
+  const char* Response(){return response;}
+  int ContentLength(){return contentLength;}
 };
 
 #endif

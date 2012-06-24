@@ -17,7 +17,7 @@ int main(int argc, char* argv[])
     {
         ServerSocket server(30000);
         ServerSocket sock;
-	char* PATH_TO_TRAFFICLOG = "./logs/splache.traffic";
+	char* PATH_TO_TRAFFICLOG = "../logs/splache.traffic";
         Log logger(PATH_TO_TRAFFICLOG);
 
         while (true) 
@@ -36,7 +36,7 @@ int main(int argc, char* argv[])
 		  << " Remote: " << inet_ntoa(server.remoteAddr().sin_addr) 
 		  << " requested " << request.file << endl;
 	        
-		processor = HttpProcessor(request, "/home/kyle/Documents/CodeBase/Splache/www");
+		processor = HttpProcessor(request, "/home/kyle/Documents/CodeBase/www");
 		processor.setDefaultPage("index.html");
 		processor.makeResponse(response);
 		
