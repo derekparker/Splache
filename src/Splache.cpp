@@ -22,32 +22,30 @@ int main(int argc, char* argv[])
 
         while (true) 
         {
-            server.accept(sock);
-            
+            server.accept(sock);            
             try 
             {
                 /* This will send data to the HttpRequest class */
                 HttpRequest request;
-                HttpResponse response = HttpResponse();
-                response.setBody((char*)"<html><head></head><body><H1>Hello, World!</H1><br />This message courtesy of<br/>Derek Parker & Kyle Nusbaum</body></html>");
-                response.statusCode = 200;
-                response.addHeader((char*)"Content-Type: text/html; charset=UTF-8");
-                response.addHeader((char*)"Connection: close");
-                
+                HttpResponse response;
+		HttpProcessor processor;
+
 		sock >> &request;
 		logger 
 		  << logger.getDateTime() 
 		  << " Remote: " << inet_ntoa(server.remoteAddr().sin_addr) 
 		  << " requested " << request.file << endl;
 	        
-                //PROCESS REQUEST >> RESPONSE//
-	      
+		processor = HttpProcessor(request, "/home/kyle/Documents/CodeBase/Splache/www");
+		processor.setDefaultPage("index.html");
+		processor.makeResponse(response);
+		
+
                 /* This will send data back to the client
                  using the HttpResponse class */
                 sock << &response;
                 server.close(sock);
             }
-            
             catch (SocketException&) {}
         }
     }
@@ -58,6 +56,7 @@ int main(int argc, char* argv[])
         Log logger(PATH_TO_LOGFILE); 
 	// PATH_TO_LOGFILE will be replaced with a configparser class member <map>
         e.logExceptionToFile(logger);
+	printf("%s\n",e.message());
         //delete logger;
     }
     

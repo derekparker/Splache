@@ -9,6 +9,7 @@
 
 #include "HttpResponse.h"
 #include "HttpRequest.h"
+#include "HttpProcessor.h"
 #include "Socket.h"
 #include "ServerSocket.h"
 #include "SocketException.h"

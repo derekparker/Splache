@@ -9,6 +9,7 @@
 #define _SocketException_class
 
 #include <string>
+#include <iostream>
 #include "Log.h"
 
 class SocketException
@@ -18,7 +19,7 @@ public:
     ~SocketException(){};
     
     void logExceptionToFile(Log& logger);
-
+    const char* message(){return m_s.c_str();}
 private:
     const std::string m_s;
 };
