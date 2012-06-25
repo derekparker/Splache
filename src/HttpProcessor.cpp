@@ -62,10 +62,20 @@ void HttpProcessor::makeResponse(HttpResponse &response)
 	response.setBody((char*)fileBuff,size);
 	free(fileBuff);
 	response.statusCode = 200;
+	MIME mime = MIME();
+	if(mime.getMimeType(fileExt) != NULL)
+	  {
+	    char contentType[50];
+	    strcpy(contentType, (char*)"Content-Type: ");
+	    strcat(contentType, mime.getMimeType(fileExt));
+	    response.addHeader(contentType);
+	  }
+	/*
 	if(strcmp(fileExt,"jpg") == 0)
 	  response.addHeader((char*)"Content-Type: image/jpg;");
 	else
 	  response.addHeader((char*)"Content-Type: text/html; charset=UTF-8");
+	*/
 	response.addHeader((char*)"Connection: close");
      }
     free(filepath);

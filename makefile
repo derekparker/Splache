@@ -8,7 +8,8 @@ OBJ = object/Splache.o \
 	object/ServerSocket.o \
 	object/Log.o \
 	object/SocketException.o \
-	object/HttpProcessor.o
+	object/HttpProcessor.o \
+	object/Mime.o
 
 
 all: splache
@@ -49,5 +50,8 @@ object/ServerSocket.o : src/ServerSocket.h src/ServerSocket.cpp src/Socket.h src
 object/SocketException.o : src/SocketException.h src/SocketException.cpp src/Log.h
 	$(CXX) -c src/SocketException.cpp -o object/SocketException.o
 
-object/HttpProcessor.o : src/HttpProcessor.h src/HttpProcessor.cpp src/HttpRequest.h src/HttpResponse.h
+object/HttpProcessor.o : src/HttpProcessor.h src/HttpProcessor.cpp src/HttpRequest.h src/HttpResponse.h src/Mime.h
 	$(CXX) -c src/HttpProcessor.cpp -o object/HttpProcessor.o
+
+object/Mime.o : src/Mime.h src/Mime.cpp
+	$(CXX) -c src/Mime.cpp -o object/Mime.o

@@ -4,6 +4,7 @@
 #include "HttpRequest.h"
 #include "HttpResponse.h"
 #include "SocketException.h"
+#include "Mime.h"
 #include <iostream>
 #include <fstream>
 
