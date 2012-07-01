@@ -29,7 +29,7 @@ void Log::writeLog(char* strToWrite)
   m_stream.flush();
 }
 
-const string  Log::getDateTime()
+const string Log::getDateTime()
 {
     time_t now = time(0);
     struct tm t;
