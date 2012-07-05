@@ -6,6 +6,7 @@
  */
 
 #include <iostream>
+#include <sys/stat.h>
 
 #include "HttpResponse.h"
 #include "HttpRequest.h"

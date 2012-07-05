@@ -8,11 +8,14 @@
 #include "Splache.h"
 
 /*TEMPORARY*/
-#include <sys/socket.h>
-#include <netinet/in.h>
+//#include <sys/socket.h>
+//#include <netinet/in.h>
+
+static void daemonize();
 
 int main(int argc, char* argv[]) 
 {
+  daemonize();
     try 
     {
         ServerSocket server(30000);
@@ -63,3 +66,32 @@ int main(int argc, char* argv[])
     return 0;
 }
 
+static void daemonize()
+{
+  pid_t pid;
+  pid = fork();
+  if(pid < 0)
+    exit(-1);
+  
+  //If original process, exit.
+  if(pid > 0)
+    exit(0);
+
+  //If we are executing this, we are the child process.
+  //Change the file usermask.
+  umask(0);
+  
+  //Create new group and make child the leader
+  if(setsid() < 0)
+    exit(1);
+  
+  //Change working directory. (Eventually pull this from config?)
+  if(chdir("/") < 0)
+    exit(1);
+
+  //Redirect standard IO streams
+  freopen("/dev/null/", "r", stdin);
+  freopen("/dev/null/", "w", stdout);
+  freopen("/dev/null/", "w", stderr);
+  
+}
