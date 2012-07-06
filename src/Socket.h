@@ -40,8 +40,10 @@ public:
     bool create();
     bool bind(const int port);
     bool listen() const;
-    bool accept (Socket&) const;
-    bool close (Socket&) const;
+    bool accept (Socket*) const;
+    bool close (Socket*) const;
+    bool self_close() const;
+
     /* Client initialization */
     bool connect (const string host, const int port);
     

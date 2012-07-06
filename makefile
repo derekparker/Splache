@@ -1,6 +1,6 @@
 CXX = g++ -ggdb -std=c++11
 BINNAME = Splache
-LINKS=
+LINKS= -lpthread
 OBJ = object/Splache.o \
 	object/Socket.o \
 	object/HttpResponse.o \
@@ -9,7 +9,8 @@ OBJ = object/Splache.o \
 	object/Log.o \
 	object/SocketException.o \
 	object/HttpProcessor.o \
-	object/Mime.o
+	object/Mime.o \
+	object/Session.o
 
 
 all: splache
@@ -29,7 +30,7 @@ splache : pre-build $(OBJ)
 	-@rm $(BINNAME)
 	ln -s bin/$(BINNAME) $(BINNAME)
 
-object/Splache.o : src/Splache.h src/Splache.cpp src/Socket.h src/HttpResponse.h src/HttpRequest.h src/ServerSocket.h src/SocketException.h src/Log.h src/ConfigValues.h src/HttpProcessor.h
+object/Splache.o : src/Splache.h src/Splache.cpp src/Socket.h src/HttpResponse.h src/HttpRequest.h src/ServerSocket.h src/SocketException.h src/Log.h src/ConfigValues.h src/HttpProcessor.h src/Session.h
 	$(CXX) -c src/Splache.cpp -o object/Splache.o
 
 object/Socket.o : src/Socket.h src/Socket.cpp
@@ -55,3 +56,6 @@ object/HttpProcessor.o : src/HttpProcessor.h src/HttpProcessor.cpp src/HttpReque
 
 object/Mime.o : src/Mime.h src/Mime.cpp
 	$(CXX) -c src/Mime.cpp -o object/Mime.o
+
+object/Session.o : src/Session.h src/Session.cpp src/HttpResponse.h src/HttpRequest.h src/HttpProcessor.h src/Socket.h src/ServerSocket.h src/SocketException.h src/ConfigValues.h src/Log.h
+	$(CXX) -c src/Session.cpp -o object/Session.o

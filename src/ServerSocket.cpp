@@ -80,7 +80,7 @@ ServerSocket& ServerSocket::operator >> (HttpRequest* request)
 }
 
 
-void ServerSocket::accept(ServerSocket& sock)
+void ServerSocket::accept(ServerSocket* sock)
 {
     if (! Socket::accept(sock) )
     {
@@ -88,9 +88,17 @@ void ServerSocket::accept(ServerSocket& sock)
     }
 }
 
-void ServerSocket::close(ServerSocket& sock)
+void ServerSocket::close(ServerSocket* sock)
 {
   if(! Socket::close(sock) )
+    {
+      throw SocketException("Could not close socket.");
+    }
+}
+
+void ServerSocket::self_close()
+{
+  if(! Socket::self_close() )
     {
       throw SocketException("Could not close socket.");
     }

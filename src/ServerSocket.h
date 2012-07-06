@@ -28,8 +28,9 @@ public:
     ServerSocket& operator << (HttpResponse*);
     ServerSocket& operator >> (HttpRequest*);
 
-    void accept (ServerSocket&);
-    void close (ServerSocket&);
+    void accept (ServerSocket*);
+    void close (ServerSocket*);
+    void self_close ();
     sockaddr_in remoteAddr(){return Socket::remoteAddr();}
     void setLogger(Log* logger){this->logger = logger;}
 };

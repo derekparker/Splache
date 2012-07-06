@@ -31,8 +31,7 @@ void HttpResponse::sendResponse(int socket){
 }
 */
 void HttpResponse::makeResponseBuffer(){
-
-  contentLength = strlen(STATUS) + strlen(SERVER_HEADER) + strlen(headers) + bodyLength + 12;
+  SetContentLength();
   response = (char*)malloc(contentLength);
   char* movingBuffer = response;
   char charStatusCode[4];
@@ -47,6 +46,10 @@ void HttpResponse::makeResponseBuffer(){
   movingBuffer = appendMovingBuffer(movingBuffer,headers);
   movingBuffer = appendMovingBuffer(movingBuffer,(char *)"\r\n\r\n");
   movingBuffer = appendMovingBuffer(movingBuffer,body,bodyLength);
+}
+
+void HttpResponse::SetContentLength(){
+  contentLength = strlen(STATUS) + strlen(SERVER_HEADER) + strlen(headers) + bodyLength + 12;
 }
 
 char* HttpResponse::appendMovingBuffer(char* buffer, char* stringToAppend){

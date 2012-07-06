@@ -31,6 +31,7 @@ class HttpResponse{
   void setBody(char*,int);
   const char* Response(){return response;}
   int ContentLength(){return contentLength;}
+  void SetContentLength();
 };
 
 #endif

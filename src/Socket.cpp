@@ -6,6 +6,7 @@
  */
 
 #include "Socket.h"
+#include <errno.h>
 
 /**
  * Implementation of the Socket class.
@@ -81,21 +82,32 @@ bool Socket::listen() const
     return true;
 }
 
-bool Socket::accept(Socket& new_socket) const
+bool Socket::accept(Socket* new_socket) const
 {
-    int addr_length = sizeof(m_addr);
-    new_socket.m_sock = ::accept(m_sock, (sockaddr *) &m_addr, (socklen_t *) &addr_length);
-    
-    if (new_socket.m_sock <= 0)
+    int addr_length = sizeof(new_socket->m_addr);
+    new_socket->m_sock = 
+      ::accept(m_sock, (sockaddr *)&new_socket->m_addr, (socklen_t *) &addr_length);
+    if (new_socket->m_sock <= 0)
         return false;
     else
         return true;
 }
 
-bool Socket::close(Socket& activeSocket) const
+bool Socket::close(Socket* activeSocket) const
 {
-  if(! ::close(activeSocket.m_sock) )
+  
+  if(::close(activeSocket->m_sock) != 0)
     {
+      return false;
+    }
+  return true;
+}
+
+bool Socket::self_close() const
+{
+  if(::close(this->m_sock) != 0)
+    {
+      printf("%s\n",strerror(errno));
       return false;
     }
   return true;

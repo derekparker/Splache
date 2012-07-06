@@ -10,60 +10,47 @@
 /*TEMPORARY*/
 //#include <sys/socket.h>
 //#include <netinet/in.h>
+#define MAXTHREADS 10
+
 
 static void daemonize();
+static void spawn_thread(Session* session);
+static pthread_t getThread();
+
+queue<pthread_t> threadQueue;
+int threadCount;
 
 int main(int argc, char* argv[]) 
 {
-  daemonize();
-    try 
+  //daemonize();
+
+  threadQueue = queue<pthread_t>();
+  // PATH_TO_LOGFILE will be replaced with a configparser class member <map>
+  char* PATH_TO_TRAFFICLOG = (char*)"../logs/splache.traffic";
+  char* PATH_TO_LOGFILE = (char*)"./logs/splache.log";
+  Log errorLogger(PATH_TO_LOGFILE);
+  Log trafficLogger(PATH_TO_TRAFFICLOG);
+
+  try 
     {
-        ServerSocket server(30000);
-        ServerSocket sock;
-	char* PATH_TO_TRAFFICLOG = (char*)"../logs/splache.traffic";
-        Log logger(PATH_TO_TRAFFICLOG);
-
-        while (true) 
+      ServerSocket server(30000);     
+      
+      while (true) 
         {
-            server.accept(sock);
-	    try 
-            {
-                /* This will send data to the HttpRequest class */
-                HttpRequest request;
-                HttpResponse response;
-		HttpProcessor processor;
+	  ServerSocket *sock = new ServerSocket();
+	  server.accept(sock);
+	  Session *s = new Session(sock, &trafficLogger, &errorLogger);
+	  spawn_thread(s);
 
-		sock >> &request;
-		logger 
-		  << logger.getDateTime() 
-		  << " Remote: " << inet_ntoa(server.remoteAddr().sin_addr) 
-		  << " requested " << request.file << endl;
-	        
-		processor = HttpProcessor(request, (char*)"/home/kyle/Documents/CodeBase/www");
-		processor.setDefaultPage((char*)"index.html");
-		processor.makeResponse(response);
-		
-
-                /* This will send data back to the client
-                 using the HttpResponse class */
-                sock << &response;
-                server.close(sock);
-            }
-            catch (SocketException&) {}
         }
     }
-    
-    catch (SocketException& e) 
+  
+  catch (SocketException& e) 
     {
-      char* PATH_TO_LOGFILE = (char*)"./logs/splache.log";
-        Log logger(PATH_TO_LOGFILE); 
-	// PATH_TO_LOGFILE will be replaced with a configparser class member <map>
-        e.logExceptionToFile(logger);
-	printf("%s\n",e.message());
-        //delete logger;
+      e.logExceptionToFile(errorLogger);
     }
-    
-    return 0;
+  
+  return 0;
 }
 
 static void daemonize()
@@ -89,9 +76,20 @@ static void daemonize()
   if(chdir("/") < 0)
     exit(1);
 
-  //Redirect standard IO streams
+  //Redirect standard IO streams to null.
   freopen("/dev/null/", "r", stdin);
   freopen("/dev/null/", "w", stdout);
   freopen("/dev/null/", "w", stderr);
+  
+}
+
+static void spawn_thread(Session* session)
+{
+  session->run();
+  delete(session);
+}
+
+static pthread_t getThread()
+{
   
 }

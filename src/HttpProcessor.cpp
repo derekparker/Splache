@@ -70,13 +70,32 @@ void HttpProcessor::makeResponse(HttpResponse &response)
 	    strcat(contentType, mime.getMimeType(fileExt));
 	    response.addHeader(contentType);
 	  }
-	/*
-	if(strcmp(fileExt,"jpg") == 0)
-	  response.addHeader((char*)"Content-Type: image/jpg;");
+	
+	if ((*request->HTTP_headers)[std::string("Connection")] == "keep-alive")
+	  response.addHeader((char*)"Connection: keep-alive");
 	else
-	  response.addHeader((char*)"Content-Type: text/html; charset=UTF-8");
-	*/
-	response.addHeader((char*)"Connection: close");
+	  response.addHeader((char*)"Connection: close");
+	/*
+	response.SetContentLength();
+	int contentLength = response.ContentLength();
+	char contentLengthstr[50];
+	
+	sprintf(contentLengthstr,"Content-Length: %d", contentLength);
+	
+	int newContentLength = contentLength + strlen(contentLengthstr);
+
+	char newContentLengthstr[50];
+	sprintf(newContentLengthstr, "Content-Length: %d", newContentLength);
+
+	while(strlen(newContentLengthstr) > strlen(contentLengthstr))
+	  {
+	    strcpy(contentLengthstr,newContentLengthstr);
+	    newContentLength = contentLength + strlen(newContentLengthstr);
+	    sprintf(newContentLengthstr, "Content-Length: %d", newContentLength);
+	  }
+	response.addHeader(newContentLengthstr);
+	/**/
+	
      }
     free(filepath);
 }
