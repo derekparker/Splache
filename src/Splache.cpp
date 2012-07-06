@@ -20,13 +20,13 @@ int main(int argc, char* argv[])
     {
         ServerSocket server(30000);
         ServerSocket sock;
-	char* PATH_TO_TRAFFICLOG = "../logs/splache.traffic";
+	char* PATH_TO_TRAFFICLOG = (char*)"../logs/splache.traffic";
         Log logger(PATH_TO_TRAFFICLOG);
 
         while (true) 
         {
-            server.accept(sock);            
-            try 
+            server.accept(sock);
+	    try 
             {
                 /* This will send data to the HttpRequest class */
                 HttpRequest request;
@@ -39,8 +39,8 @@ int main(int argc, char* argv[])
 		  << " Remote: " << inet_ntoa(server.remoteAddr().sin_addr) 
 		  << " requested " << request.file << endl;
 	        
-		processor = HttpProcessor(request, "/home/kyle/Documents/CodeBase/www");
-		processor.setDefaultPage("index.html");
+		processor = HttpProcessor(request, (char*)"/home/kyle/Documents/CodeBase/www");
+		processor.setDefaultPage((char*)"index.html");
 		processor.makeResponse(response);
 		
 
@@ -55,7 +55,7 @@ int main(int argc, char* argv[])
     
     catch (SocketException& e) 
     {
-      char* PATH_TO_LOGFILE = "./logs/splache.log";
+      char* PATH_TO_LOGFILE = (char*)"./logs/splache.log";
         Log logger(PATH_TO_LOGFILE); 
 	// PATH_TO_LOGFILE will be replaced with a configparser class member <map>
         e.logExceptionToFile(logger);

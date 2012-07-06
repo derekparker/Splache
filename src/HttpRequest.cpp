@@ -7,6 +7,7 @@
 
 HttpRequest::HttpRequest(char* buffer){
   setRequest(buffer);
+  HTTP_headers = NULL;
 }
 
 HttpRequest::~HttpRequest(){
@@ -25,7 +26,22 @@ void HttpRequest::setRequest(char* buffer){
   placeholder = cutString(file, (char*)" ");
   host = cutString(placeholder, (char*)"Host");
   host += 6;
-  cutString(host, (char*)"\r");
+  placeholder = cutString(host, (char*)"\r")+1;
+  //printf("%s",placeholder);
+
+  if(HTTP_headers != NULL)
+    delete(HTTP_headers);
+
+  HTTP_headers = new std::map<char*,char*>();
+
+  getHeaders(HTTP_headers, placeholder);
+
+  //  std::map<char*,char*>::iterator iter;
+  // for(iter = HTTP_headers->begin(); iter != HTTP_headers->end(); iter++)
+  //  {
+  //    printf("%s is this: %s\n", iter->first, iter->second);
+  //  }
+  
 }
 
 char* HttpRequest::cutString(char * inStr, char * cutBy)
@@ -34,3 +50,22 @@ char* HttpRequest::cutString(char * inStr, char * cutBy)
   placeholder[0] = 0;
   return placeholder+1;
 }
+
+void HttpRequest::getHeaders(std::map<char*,char*>* headerMap, char* headerList)
+{
+  char* colon = (char*)":";
+  
+  char* lineHead = headerList;
+  char* valueHead;
+  char* lineEnd;
+  
+  while(lineHead[0] != '\r')
+    {
+      valueHead = cutString(lineHead,colon)+1;
+      lineEnd = cutString(valueHead,(char*)"\r")+1;
+      (*headerMap)[lineHead] = valueHead;
+      lineHead = lineEnd;
+    }
+}
+
+
