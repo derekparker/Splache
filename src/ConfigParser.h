@@ -37,6 +37,6 @@ public:
     ConfigParser();
     ~ConfigParser();
     
-    void parseConfigFile(map<char*, char*>& configMap);
+    void parseConfigFile(map<char*, char*, cmp_str>& configMap);
 };
 #endif
