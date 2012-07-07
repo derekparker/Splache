@@ -10,14 +10,15 @@
 
 #include <map>
 #include "ConfigParser.h"
+#include <string.h>
 
 namespace config
 {
     struct cmp_str
     {
-       bool operator()(char const *a, char const *b)
+       bool operator()(const char *a, const char *b)
        {
-          return std::strcmp(a, b) < 0;
+          return strcmp(a, b) < 0;
        }
     };
 
