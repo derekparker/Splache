@@ -13,7 +13,15 @@
 
 namespace config
 {
-    std::map<std::string, std::string> configValues;
+    struct cmp_str
+    {
+       bool operator()(char const *a, char const *b)
+       {
+          return std::strcmp(a, b) < 0;
+       }
+    };
+
+    std::map<char*, char*, cmp_str> configValues;
 }
 
 #endif
