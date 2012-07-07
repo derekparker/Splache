@@ -11,6 +11,8 @@
 #include <iostream>
 #include <fstream>
 
+#include "ConfigValues.h"
+
 /**
  * Class to parse through the config file and
  * set a map with key/value information based
@@ -37,6 +39,6 @@ public:
     ConfigParser();
     ~ConfigParser();
     
-    void parseConfigFile(map<char*, char*, cmp_str>& configMap);
+    void parseConfigFile(map<char*, char*, config::cmp_str>& configMap);
 };
 #endif
