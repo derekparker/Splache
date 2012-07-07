@@ -10,12 +10,12 @@ using namespace std;
 
 Log::Log(char* logfile, pthread_mutex_t *mutex)
 {
-  loglock = mutex;
-  m_stream.open(logfile, ios::app);
+    loglock = mutex;
+    m_stream.open(logfile, ios::app);
     if(!m_stream.is_open())
-      {
+    {
 	printf("Could not open logfile: %s\n",logfile);
-      }
+    }
     else printf("%s opened for log.\n",logfile);
 }
 
@@ -26,7 +26,7 @@ void Log::logException(char* exceptionThrown)
 
 void Log::writeLog(char* strToWrite)
 {
-  m_stream << strToWrite << endl;
+    m_stream << strToWrite << endl;
 }
 
 const string Log::getDateTime()
@@ -48,6 +48,6 @@ Log::~Log()
 
 void Log::flush()
 {
-  m_stream.flush();
+    m_stream.flush();
 }
 
