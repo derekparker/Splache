@@ -10,37 +10,45 @@
 /*TEMPORARY*/
 //#include <sys/socket.h>
 //#include <netinet/in.h>
-#define MAXTHREADS 10
+//#define MAXTHREADS 10
 
 
 static void daemonize();
-static void spawn_thread(Session* session);
-static pthread_t getThread();
-
-queue<pthread_t> threadQueue;
-int threadCount;
+void *spawn_thread(void*);
 
 int main(int argc, char* argv[]) 
-{
-  //daemonize();
-
-  threadQueue = queue<pthread_t>();
+{  
   // PATH_TO_LOGFILE will be replaced with a configparser class member <map>
   char* PATH_TO_TRAFFICLOG = (char*)"../logs/splache.traffic";
   char* PATH_TO_LOGFILE = (char*)"../logs/splache.log";
-  Log errorLogger(PATH_TO_LOGFILE);
-  Log trafficLogger(PATH_TO_TRAFFICLOG);
+
+  pthread_mutex_t errorLoglock;
+  pthread_mutex_t trafficLoglock;
+  if(pthread_mutex_init(&errorLoglock,NULL) != 0)
+    printf("Error creating mutex.");
+  if(pthread_mutex_init(&trafficLoglock,NULL) != 0)
+    printf("Error creating mutex.");
+  
+  Log errorLogger(PATH_TO_LOGFILE, &errorLoglock);
+  Log trafficLogger(PATH_TO_TRAFFICLOG, &trafficLoglock);
+
+  //daemonize after logs start to give them a chance to report errors.
+  daemonize();
 
   try 
     {
-      ServerSocket server(30000);     
-      
+      ServerSocket server(80);     
+ 
       while (true) 
         {
 	  ServerSocket *sock = new ServerSocket();
 	  server.accept(sock);
 	  Session *s = new Session(sock, &trafficLogger, &errorLogger);
-	  spawn_thread(s);
+	  pthread_t newThread;
+	  int error = pthread_create(&newThread,NULL,spawn_thread,(void*)s);
+	  if(error != 0)
+	    printf("Thread Error");
+	  //spawn_thread(s);
 
         }
     }
@@ -84,13 +92,19 @@ static void daemonize()
   
 }
 
-static void spawn_thread(Session* session)
+void *spawn_thread(void *arg)
 {
+  printf("Spawning Thread\n");
+  Session *session = (Session*)arg;
   session->run();
   delete(session);
+  printf("Thread dying.\n");
 }
-
+/*
 static pthread_t getThread()
 {
-  
+  if(threadQueue.empty)
+    
 }
+static p
+*/

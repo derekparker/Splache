@@ -12,6 +12,7 @@
 
 #include <string>
 #include <map>
+#include <pthread.h>
 
 class Session{
   ServerSocket *socket;

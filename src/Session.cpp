@@ -22,7 +22,6 @@ void Session::run()
 	    if(!request.isValid())
 	      {
 		open = false;
-		printf("Please?");
 	      }
 	    else
 	      {
@@ -31,7 +30,7 @@ void Session::run()
 		  open = true;
 		else
 		  open = false;
-		
+
 		*trafficLogger
 		  << trafficLogger->getDateTime()
 		  << " Remote: " << inet_ntoa(socket->remoteAddr().sin_addr)
