@@ -26,7 +26,7 @@
 class ConfigParser
 {
 private:
-    const char* PATH_TO_CONFIG = ""; // Going to change this based off of a relative path to config file.
+    const char* PATH_TO_CONFIG = "../conf/Splache.conf";
     const int MAX_SIZE = 33; // 32 for string + 1 for null terminator
     char buf[1024];
     char ch = ' ';

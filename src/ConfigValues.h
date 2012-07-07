@@ -9,6 +9,7 @@
 #define _configValues_h
 
 #include <map>
+#include "ConfigParser.h"
 
 namespace config
 {

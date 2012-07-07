@@ -50,14 +50,20 @@ const ServerSocket& ServerSocket::operator >> (string& s) const
 {
   
   Socket::recv(s);
-  //Don't need to throw an error when receive fails.
-  //Receives will timeout with persistent connections.
   /*
+   * I actually want to keep this due to the fact
+   * that in the config file the persistant 
+   * connection will be optional. I want it to
+   * be optional because sometimes persistant 
+   * connections can be bad and lead to massive 
+   * security vulnerabilities (DDOS attacks)
+   */
+  
     if (! Socket::recv(s))
     {
       throw new SocketException("Could not read from socket.");
     }
-  */
+  
   return *this;
 }
 
