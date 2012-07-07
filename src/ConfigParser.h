@@ -27,7 +27,7 @@ class ConfigParser
 {
 private:
     const char* PATH_TO_CONFIG = "../conf/Splache.conf";
-    const int* MAX_SIZE = 33; // 32 for string + 1 for null terminator
+    static const int MAX_SIZE = 33; // 32 for string + 1 for null terminator
     char buf[1024];
     char ch = ' ';
     char key[MAX_SIZE];
