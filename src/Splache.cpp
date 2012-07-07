@@ -27,7 +27,7 @@ int main(int argc, char* argv[])
   threadQueue = queue<pthread_t>();
   // PATH_TO_LOGFILE will be replaced with a configparser class member <map>
   char* PATH_TO_TRAFFICLOG = (char*)"../logs/splache.traffic";
-  char* PATH_TO_LOGFILE = (char*)"./logs/splache.log";
+  char* PATH_TO_LOGFILE = (char*)"../logs/splache.log";
   Log errorLogger(PATH_TO_LOGFILE);
   Log trafficLogger(PATH_TO_TRAFFICLOG);
 
@@ -45,9 +45,10 @@ int main(int argc, char* argv[])
         }
     }
   
-  catch (SocketException& e) 
+  catch (SocketException *e) 
     {
-      e.logExceptionToFile(errorLogger);
+      e->logExceptionToFile(errorLogger);
+      delete(e);
     }
   
   return 0;

@@ -42,7 +42,7 @@ bool Socket::create()
     return true;
 }
 
-bool Socket::bind(const int port)
+bool Socket::bind(const u_short port)
 {
     if ( !is_valid() )
     {
@@ -52,10 +52,10 @@ bool Socket::bind(const int port)
     m_addr.sin_family = AF_INET;
     m_addr.sin_addr.s_addr = INADDR_ANY;
     m_addr.sin_port = htons(port);
+
+    printf("%d\n",ntohs(m_addr.sin_port));
     
-    int bind_return = ::bind (m_sock,
-                              (struct sockaddr *) &m_addr,
-                              sizeof(m_addr) );
+    int bind_return = ::bind (m_sock, (struct sockaddr *) &m_addr, sizeof(m_addr) );
     
     if (bind_return == -1)
     {
@@ -89,8 +89,12 @@ bool Socket::accept(Socket* new_socket) const
       ::accept(m_sock, (sockaddr *)&new_socket->m_addr, (socklen_t *) &addr_length);
     if (new_socket->m_sock <= 0)
         return false;
-    else
-        return true;
+    struct timeval timeout;
+    timeout.tv_sec = 15;
+    timeout.tv_usec = 0;
+    if(setsockopt(new_socket->m_sock,SOL_SOCKET,SO_RCVTIMEO, (char*)&timeout, sizeof(timeout)))
+      return false;
+    return true;
 }
 
 bool Socket::close(Socket* activeSocket) const
@@ -141,7 +145,7 @@ int Socket::recv (std::string& s) const
     
     if (status == -1)
     {
-        return 0;
+        return -1;
     }
     else if (status == 0)
     {

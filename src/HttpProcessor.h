@@ -4,9 +4,10 @@
 #include "HttpRequest.h"
 #include "HttpResponse.h"
 #include "SocketException.h"
-#include "Mime.h"
+#include "Constants.h"
 #include <iostream>
 #include <fstream>
+#include <algorithm>
 
 class HttpProcessor{
   const HttpRequest* request;
@@ -20,7 +21,7 @@ class HttpProcessor{
   void makeResponse(HttpResponse &response);
   char* getFilename(char* requestFile);
   char* getFileExtension(char* pathString);
-
+  void makeErrorResponse(int status, HttpResponse &response);
 };
 
 #endif

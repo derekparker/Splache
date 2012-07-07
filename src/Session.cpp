@@ -14,34 +14,53 @@ void Session::run()
       bool open = true;
       while(open)
 	{
-	  *socket >> &request;
-	  //std::string s = std::string("Connection");
-	  //std::map<std::string,std::string> *headers = request.HTTP_headers;
-	  //std::string s2 = (*headers)[s];
-	  //printf("%s\n", (*request.HTTP_headers)[std::string("Connection")].c_str());
-	  
-	  //if( (*request.HTTP_headers)[std::string("Connection")] == "keep-alive")
-	  //  open = true;
-	  //else
-	    open = false;
-
-	  *trafficLogger
-	    << trafficLogger->getDateTime()
-	    << " Remote: " << inet_ntoa(socket->remoteAddr().sin_addr)
-	    << " requested " << request.file << endl;
-	  
-	  processor = HttpProcessor(request, (char*)"/home/kyle/Documents/CodeBase/www");
-	  processor.setDefaultPage((char*)"index.html");
-	  processor.makeResponse(response);
-
-	  //printf("%s\n",response.Response());
-
-	  *socket << &response;
+	  HttpRequest request = HttpRequest();
+	  HttpResponse response = HttpResponse();
+	  HttpProcessor processor = HttpProcessor();
+	  try{
+	    *socket >> &request;
+	    if(!request.isValid())
+	      {
+		open = false;
+		printf("Please?");
+	      }
+	    else
+	      {
+	    
+		if( (*request.HTTP_headers)[std::string("connection")] == "keep-alive")
+		  open = true;
+		else
+		  open = false;
+		
+		*trafficLogger
+		  << trafficLogger->getDateTime()
+		  << " Remote: " << inet_ntoa(socket->remoteAddr().sin_addr)
+		  << " requested " << request.file << endl;
+		
+		processor = HttpProcessor(request, (char*)"/home/kyle/Documents/CodeBase/www");
+		processor.setDefaultPage((char*)"index.html");
+		processor.makeResponse(response);
+		
+		if(response.errorResponse == true)
+		  open = false;
+		
+		*socket << &response;
+	      }
+	  }
+	  catch(HttpException *e)
+	    {
+	      open = false;
+	      e->logExceptionToFile(*trafficLogger);
+	      processor.makeErrorResponse(400, response);
+	      *socket<<&response;
+	      delete(e);
+	    }
 	}
       socket->self_close();
     }
-  catch(SocketException& e)
+  catch(SocketException *e)
     {
-      e.logExceptionToFile(*errorLogger);
+      e->logExceptionToFile(*errorLogger);
+      delete(e);
     }
 }

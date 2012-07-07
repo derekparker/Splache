@@ -9,7 +9,7 @@ HttpResponse::HttpResponse(){
   headers = NULL;
   body = NULL;
   response = NULL;
-  contentLength = 0;
+  errorResponse = false;
 }
 
 HttpResponse::~HttpResponse(){
@@ -20,26 +20,15 @@ HttpResponse::~HttpResponse(){
   if(response != NULL)
     free(response);
 }
-/*
-void HttpResponse::sendResponse(int socket){
-  char* responseBuffer = makeResponseBuffer();
-  //send responseBuffer 
-  //I don't know how we're doing sockets yet, so 
-  //I'll leave this in pseudocode for now
-  printf("%s",responseBuffer);
-  free(responseBuffer);
-}
-*/
+
 void HttpResponse::makeResponseBuffer(){
-  SetContentLength();
-  response = (char*)malloc(contentLength);
+  
+  response = (char*)malloc(ContentLength());
   char* movingBuffer = response;
-  char charStatusCode[4];
-  sprintf(charStatusCode, "%d", statusCode);
 
   movingBuffer = appendMovingBuffer(movingBuffer,(char*)STATUS);
   movingBuffer = appendMovingBuffer(movingBuffer,(char *)" ");
-  movingBuffer = appendMovingBuffer(movingBuffer,charStatusCode);
+  movingBuffer = appendMovingBuffer(movingBuffer,statusAndCode);
   movingBuffer = appendMovingBuffer(movingBuffer,(char *)"\r\n");
   movingBuffer = appendMovingBuffer(movingBuffer,(char*)SERVER_HEADER);
   movingBuffer = appendMovingBuffer(movingBuffer,(char *)"\r\n");
@@ -48,16 +37,16 @@ void HttpResponse::makeResponseBuffer(){
   movingBuffer = appendMovingBuffer(movingBuffer,body,bodyLength);
 }
 
-void HttpResponse::SetContentLength(){
-  contentLength = strlen(STATUS) + strlen(SERVER_HEADER) + strlen(headers) + bodyLength + 12;
+int HttpResponse::ContentLength(){
+  return strlen(STATUS)+strlen(statusAndCode)+strlen(SERVER_HEADER)+strlen(headers)+bodyLength+9;
 }
 
-char* HttpResponse::appendMovingBuffer(char* buffer, char* stringToAppend){
+char* HttpResponse::appendMovingBuffer(char* buffer, const char* stringToAppend){
   strcpy(buffer,stringToAppend);
   return buffer + strlen(stringToAppend);
 }
 
-char* HttpResponse::appendMovingBuffer(char* buffer, char* stringToAppend, int length)
+char* HttpResponse::appendMovingBuffer(char* buffer, const char* stringToAppend, int length)
 {
   memcpy(buffer, stringToAppend, length);
   return buffer + length;
@@ -81,15 +70,18 @@ void HttpResponse::addHeader(char* newHeader){
       free(headers);
       headers = buff;
     }
-  
 }
 
 void HttpResponse::setBody(char* newBody, int bodyLength){
   if(body != NULL)
     free(body);
-  //body = (char*) malloc(strlen(newBody)+1);
   this->bodyLength = bodyLength;
   body = (char*) malloc(bodyLength);
   memcpy(body, newBody, bodyLength);
   return;
+}
+
+void HttpResponse::SetStatusCode(const int statusCode)
+{
+  statusAndCode = Constants::RESPONSE_CODES.find(statusCode)->second.c_str();
 }

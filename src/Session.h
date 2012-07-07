@@ -15,9 +15,6 @@
 
 class Session{
   ServerSocket *socket;
-  HttpRequest request;
-  HttpResponse response;
-  HttpProcessor processor;
   Log *trafficLogger;
   Log *errorLogger;
  public:

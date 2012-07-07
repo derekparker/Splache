@@ -38,7 +38,7 @@ public:
     
     /* Server initialization */
     bool create();
-    bool bind(const int port);
+    bool bind(const u_short port);
     bool listen() const;
     bool accept (Socket*) const;
     bool close (Socket*) const;

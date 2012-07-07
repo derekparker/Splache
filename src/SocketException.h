@@ -8,20 +8,18 @@
 #ifndef _SocketException_class
 #define _SocketException_class
 
-#include <string>
-#include <iostream>
-#include "Log.h"
+#include "GeneralException.h"
 
-class SocketException
+class SocketException : public GeneralException
 {
-public:
-    SocketException(std::string s) : m_s(s){};
-    ~SocketException(){};
-    
-    void logExceptionToFile(Log& logger);
-    const char* message(){return m_s.c_str();}
-private:
-    const std::string m_s;
+ public:
+ 
+ SocketException(std::string s) : GeneralException(s){
+    printf("%s\n",s.c_str());
+    printf("%s\n",m_s.c_str());
+  };
+  //using GeneralException::GeneralException(std::string);
+  ~SocketException(){};
 };
 
 

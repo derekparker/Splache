@@ -13,17 +13,17 @@ ServerSocket::ServerSocket (int port)
 {
     if ( ! Socket::create() ) 
     {
-        throw SocketException ("Could not create server socket.");
+        throw new SocketException ("Could not create server socket.");
     }
     
     if ( ! Socket::bind (port) )
     {
-        throw SocketException ( "Could not bind to port.");
+        throw new SocketException ( "Could not bind to port.");
     }
     
     if (! Socket::listen() )
     {
-        throw SocketException ( "Could not listen to port.");
+        throw new SocketException ( "Could not listen to port.");
     }
 }
 
@@ -40,7 +40,7 @@ const ServerSocket& ServerSocket::operator << (const string& s) const
 {
     if (! Socket::send(s) )
     {
-        throw SocketException("Could not write to socket.");
+        throw new SocketException("Could not write to socket.");
     }
     
     return *this;
@@ -48,24 +48,29 @@ const ServerSocket& ServerSocket::operator << (const string& s) const
 
 const ServerSocket& ServerSocket::operator >> (string& s) const
 {
-    if (! Socket::recv(s) )
+  
+  Socket::recv(s);
+  //Don't need to throw an error when receive fails.
+  //Receives will timeout with persistent connections.
+  /*
+    if (! Socket::recv(s))
     {
-        throw SocketException("Could not read from socket.");
+      throw new SocketException("Could not read from socket.");
     }
-    
-    return *this;
+  */
+  return *this;
 }
 
 ServerSocket& ServerSocket::operator << (HttpResponse* response)
 {
   if( response == NULL )
     {
-      throw SocketException("Cannot send null response.");
+      throw new SocketException("Cannot send null response.");
     }
   response->makeResponseBuffer();
   if (! Socket::send(response->Response(), response->ContentLength()) )
     {
-      throw SocketException("Could not write to socket.");
+      throw new SocketException("Could not write to socket.");
     }
   return *this;
   
@@ -75,6 +80,8 @@ ServerSocket& ServerSocket::operator >> (HttpRequest* request)
 {
   string s;
   *this >> s;
+  if(s == "")
+    return *this;
   request->setRequest((char*)s.c_str());
   return *this;
 }
@@ -84,7 +91,7 @@ void ServerSocket::accept(ServerSocket* sock)
 {
     if (! Socket::accept(sock) )
     {
-        throw SocketException("Could not accept socket.");
+        throw new SocketException("Could not accept socket.");
     }
 }
 
@@ -92,7 +99,7 @@ void ServerSocket::close(ServerSocket* sock)
 {
   if(! Socket::close(sock) )
     {
-      throw SocketException("Could not close socket.");
+      throw new SocketException("Could not close socket.");
     }
 }
 
@@ -100,6 +107,6 @@ void ServerSocket::self_close()
 {
   if(! Socket::self_close() )
     {
-      throw SocketException("Could not close socket.");
+      throw new SocketException("Could not close socket.");
     }
 }

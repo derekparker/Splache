@@ -26,6 +26,17 @@ void HttpProcessor::setDefaultPage(char* page)
   strcpy(defaultPage, page);
 }
 
+void HttpProcessor::makeErrorResponse(int status, HttpResponse &response)
+{
+  response = HttpResponse();
+  char* body = (char*)"<html><head></head><body><H1>Error</H1></body></html>";
+  response.setBody(body, strlen(body));
+  response.SetStatusCode(status);
+  response.addHeader((char*)"Content-Type: text/html; charset=UTF-8");
+  response.addHeader((char*)"Connection: close");
+  response.errorResponse = true;
+}
+
 void HttpProcessor::makeResponse(HttpResponse &response)
 {
     if(request == NULL)
@@ -38,12 +49,7 @@ void HttpProcessor::makeResponse(HttpResponse &response)
     file = fopen(filepath, "rb");
     if( file == NULL )
       {
-	response = HttpResponse();
-	char* body = (char*)"<html><head></head><body><H1>404</H1></body></html>";
-	response.setBody(body, strlen(body));
-	response.statusCode = 404;
-	response.addHeader((char*)"Content-Type: text/html; charset=UTF-8");
-	response.addHeader((char*)"Connection: close");
+	makeErrorResponse(404, response);
       }
     else
       {
@@ -56,33 +62,43 @@ void HttpProcessor::makeResponse(HttpResponse &response)
 	fread(fileBuff, size, 1, file);
 	fclose(file);
 	
-	//std::string str((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());	
-	
 	response = HttpResponse();
 	response.setBody((char*)fileBuff,size);
 	free(fileBuff);
-	response.statusCode = 200;
-	MIME mime = MIME();
-	if(mime.getMimeType(fileExt) != NULL)
+	response.SetStatusCode(200);
+
+	std::string mimeType = Constants::MIME_TYPES.find(fileExt)->first;
+
+	if( mimeType != "")
 	  {
 	    char contentType[50];
 	    strcpy(contentType, (char*)"Content-Type: ");
-	    strcat(contentType, mime.getMimeType(fileExt));
+	    strcat(contentType, Constants::MIME_TYPES.find(fileExt)->second.c_str());
 	    response.addHeader(contentType);
 	  }
 	
+	/*
 	if ((*request->HTTP_headers)[std::string("Connection")] == "keep-alive")
 	  response.addHeader((char*)"Connection: keep-alive");
 	else
 	  response.addHeader((char*)"Connection: close");
+	*/
+
+	if((*request->HTTP_headers)[std::string("connection")] == "close")
+	  response.addHeader((char*)"Connection: close");
+
+	int contentLength = response.BodyLength();
+	char contentLengthstr[50];
+	sprintf(contentLengthstr,"Content-Length: %d",contentLength);
+	response.addHeader(contentLengthstr);
+	
 	/*
-	response.SetContentLength();
 	int contentLength = response.ContentLength();
 	char contentLengthstr[50];
 	
 	sprintf(contentLengthstr,"Content-Length: %d", contentLength);
 	
-	int newContentLength = contentLength + strlen(contentLengthstr);
+	int newContentLength = contentLength + strlen(contentLengthstr)+2;
 
 	char newContentLengthstr[50];
 	sprintf(newContentLengthstr, "Content-Length: %d", newContentLength);
@@ -90,7 +106,7 @@ void HttpProcessor::makeResponse(HttpResponse &response)
 	while(strlen(newContentLengthstr) > strlen(contentLengthstr))
 	  {
 	    strcpy(contentLengthstr,newContentLengthstr);
-	    newContentLength = contentLength + strlen(newContentLengthstr);
+	    newContentLength = contentLength + strlen(newContentLengthstr)+2;
 	    sprintf(newContentLengthstr, "Content-Length: %d", newContentLength);
 	  }
 	response.addHeader(newContentLengthstr);

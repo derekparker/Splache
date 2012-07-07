@@ -8,6 +8,8 @@
 #include <string.h>
 #include <map>
 #include <string>
+#include <algorithm>
+#include "HttpException.h"
 
 #ifndef HTTPREQUEST_H
 #define HTTPREQUEST_H
@@ -19,12 +21,12 @@ class HttpRequest{
  public:
   char* method;
   char* file;
-  char* host;
   std::map<std::string,std::string>* HTTP_headers;
-  HttpRequest(){} //HTTP_headers = NULL;}
+  HttpRequest();
   ~HttpRequest();
   HttpRequest(char* buffer);
   void setRequest(char* buffer);
+  bool isValid();
 };
 
 #endif

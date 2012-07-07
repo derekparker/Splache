@@ -7,9 +7,8 @@ OBJ = object/Splache.o \
 	object/HttpRequest.o \
 	object/ServerSocket.o \
 	object/Log.o \
-	object/SocketException.o \
+	object/GeneralException.o \
 	object/HttpProcessor.o \
-	object/Mime.o \
 	object/Session.o
 
 
@@ -39,23 +38,20 @@ object/Socket.o : src/Socket.h src/Socket.cpp
 object/Log.o : src/Log.h src/Log.cpp
 	$(CXX) -c src/Log.cpp -o object/Log.o
 
-object/HttpResponse.o : src/HttpResponse.h src/HttpResponse.cpp
+object/HttpResponse.o : src/HttpResponse.h src/HttpResponse.cpp src/Constants.h
 	$(CXX) -c src/HttpResponse.cpp -o object/HttpResponse.o
 
-object/HttpRequest.o : src/HttpRequest.h src/HttpRequest.cpp
+object/HttpRequest.o : src/HttpRequest.h src/HttpRequest.cpp src/HttpException.h
 	$(CXX) -c src/HttpRequest.cpp -o object/HttpRequest.o
 
 object/ServerSocket.o : src/ServerSocket.h src/ServerSocket.cpp src/Socket.h src/HttpRequest.h src/HttpResponse.h src/SocketException.h
 	$(CXX) -c src/ServerSocket.cpp -o object/ServerSocket.o
 
-object/SocketException.o : src/SocketException.h src/SocketException.cpp src/Log.h
-	$(CXX) -c src/SocketException.cpp -o object/SocketException.o
-
-object/HttpProcessor.o : src/HttpProcessor.h src/HttpProcessor.cpp src/HttpRequest.h src/HttpResponse.h src/Mime.h
+object/HttpProcessor.o : src/HttpProcessor.h src/HttpProcessor.cpp src/HttpRequest.h src/HttpResponse.h src/Constants.h
 	$(CXX) -c src/HttpProcessor.cpp -o object/HttpProcessor.o
 
-object/Mime.o : src/Mime.h src/Mime.cpp
-	$(CXX) -c src/Mime.cpp -o object/Mime.o
-
-object/Session.o : src/Session.h src/Session.cpp src/HttpResponse.h src/HttpRequest.h src/HttpProcessor.h src/Socket.h src/ServerSocket.h src/SocketException.h src/ConfigValues.h src/Log.h
+object/Session.o : src/Session.h src/Session.cpp src/HttpResponse.h src/HttpRequest.h src/HttpProcessor.h src/Socket.h src/ServerSocket.h src/SocketException.h src/HttpException.h src/ConfigValues.h src/Log.h
 	$(CXX) -c src/Session.cpp -o object/Session.o
+
+object/GeneralException.o: src/GeneralException.h src/GeneralException.cpp
+	$(CXX) -c src/GeneralException.cpp -o object/GeneralException.o
