@@ -9,6 +9,7 @@
 #include <sys/stat.h>
 #include <pthread.h>
 #include <queue>
+#include <string.h>
 
 #include "HttpResponse.h"
 #include "HttpRequest.h"
