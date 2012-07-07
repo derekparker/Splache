@@ -28,7 +28,6 @@ int main(int argc, char* argv[])
     delete(parser);  // I want to destroy it now because the class destructer does some io cleanup
     
     char* PATH_TO_TRAFFICLOG = (char*)"../logs/splache.traffic";
-    char* PATH_TO_LOGFILE = config::configValues["PATH_TO_LOGFILE"];
 
     pthread_mutex_t errorLoglock;
     pthread_mutex_t trafficLoglock;
@@ -37,7 +36,7 @@ int main(int argc, char* argv[])
     if(pthread_mutex_init(&trafficLoglock,NULL) != 0)
         printf("Error creating mutex.");
   
-    Log errorLogger(PATH_TO_LOGFILE, &errorLoglock);
+    Log errorLogger(config::configValues["PATH_TO_LOGFILE"], &errorLoglock);
     Log trafficLogger(PATH_TO_TRAFFICLOG, &trafficLoglock);
 
     //daemonize after logs start to give them a chance to report errors.
