@@ -38,5 +38,5 @@ public:
     ~ConfigParser();
     
     void parseConfigFile(map<std::string, std::string>& configMap);
-}
+};
 #endif
