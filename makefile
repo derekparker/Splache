@@ -9,7 +9,8 @@ OBJ = object/Splache.o \
 	object/Log.o \
 	object/GeneralException.o \
 	object/HttpProcessor.o \
-	object/Session.o
+	object/Session.o \
+	object/ConfigParser.o
 
 
 all: splache
@@ -29,7 +30,7 @@ splache : pre-build $(OBJ)
 	-@rm $(BINNAME)
 	ln -s bin/$(BINNAME) $(BINNAME)
 
-object/Splache.o : src/Splache.h src/Splache.cpp src/Socket.h src/HttpResponse.h src/HttpRequest.h src/ServerSocket.h src/SocketException.h src/Log.h src/ConfigValues.h src/HttpProcessor.h src/Session.h
+object/Splache.o : src/Splache.h src/Splache.cpp src/ConfigParser.h src/ConfigParser.cpp src/Socket.h src/HttpResponse.h src/HttpRequest.h src/ServerSocket.h src/SocketException.h src/Log.h src/ConfigValues.h src/HttpProcessor.h src/Session.h
 	$(CXX) -c src/Splache.cpp -o object/Splache.o
 
 object/Socket.o : src/Socket.h src/Socket.cpp
