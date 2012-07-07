@@ -13,7 +13,7 @@
 
 namespace config
 {
-    map<std::string, std::string> configValues;
+    std::map<std::string, std::string> configValues;
 }
 
 #endif
