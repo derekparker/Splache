@@ -56,3 +56,6 @@ object/Session.o : src/Session.h src/Session.cpp src/HttpResponse.h src/HttpRequ
 
 object/GeneralException.o: src/GeneralException.h src/GeneralException.cpp
 	$(CXX) -c src/GeneralException.cpp -o object/GeneralException.o
+
+object/ConfigParser.o : src/ConfigParser.h src/ConfigParser.cpp src/ConfigValues.h
+	$(CXX) -c src/ConfigParser.cpp -o object/ConfigParser.o
