@@ -30,6 +30,8 @@ int main(int argc, char* argv[])
     char* PATH_TO_TRAFFICLOG = (char*)"../logs/splache.traffic";
     char* PATH_TO_LOGFILE = config::configValues["PATH_TO_LOGFILE"];
 
+    //These are the mutexes for the logs.
+    //They are used to prevent the handler threads from logging over eachother
     pthread_mutex_t errorLoglock;
     pthread_mutex_t trafficLoglock;
     if(pthread_mutex_init(&errorLoglock,NULL) != 0)
@@ -37,25 +39,33 @@ int main(int argc, char* argv[])
     if(pthread_mutex_init(&trafficLoglock,NULL) != 0)
         printf("Error creating mutex.");
   
+    //Create the loggers.
     Log errorLogger(PATH_TO_LOGFILE, &errorLoglock);
     Log trafficLogger(PATH_TO_TRAFFICLOG, &trafficLoglock);
 
-    //daemonize after logs start to give them a chance to report errors.
+    //daemonize after logs start to give non-logged operations a chance to report errors.
     daemonize();
 
     try 
-    {
+      {
+	//Start listening on port. Port should be configurable eventually.
         ServerSocket server(80);     
+	
+	//Begin looping
         while (true) 
         {
-            ServerSocket *sock = new ServerSocket();
-            server.accept(sock);
-            Session *s = new Session(sock, &trafficLogger, &errorLogger);
-            pthread_t newThread;
-            int error = pthread_create(&newThread,NULL,spawn_thread,(void*)s);
-            if(error != 0)
-                printf("Thread Error");
-            //spawn_thread(s);
+	  //Create new socket to accept on.
+	  ServerSocket *sock = new ServerSocket();
+	  
+	  //Accept connection. This blocks execution
+	  server.accept(sock);
+
+	  //Create our session and spawn handler thread
+	  Session *s = new Session(sock, &trafficLogger, &errorLogger);
+	  pthread_t newThread;
+	  int error = pthread_create(&newThread,NULL,spawn_thread,(void*)s);
+	  if(error != 0)
+	    printf("Thread Error");
         }
     }
   
@@ -105,11 +115,3 @@ void *spawn_thread(void *arg)
     delete(session);
     printf("Thread dying.\n");
 }
-/*
-static pthread_t getThread()
-{
-  if(threadQueue.empty)
-    
-}
-static p
-*/
