@@ -43,26 +43,39 @@ void HttpRequest::setRequest(char* buffer){
 
   char* placeholder;
 
+  //Method is at the beginning of the request
   method = request;
+
+  //Cut the string at the end of the method, Where the file is. 
+  //File string start is next char.
   file = cutString(method, (char*)" ");
+  
+  //If we couldn't get the file, this request is malformed.
   if((long)file == 0)
     throw new HttpException("Bad Request");
+
+  //Cut the end of the file string
   placeholder = cutString(file, (char*)" ");
-  //host = cutString(placeholder, (char*)"Host");
-  //host += 6;
+  
+  //Jump to the next line, where the headers will be.
   placeholder = cutString(placeholder, (char*)"\r")+1;
+
+  //If we couldn't get a newline, there are no headers.
   if((long)placeholder == 1)
     return;
-  //printf("%s",placeholder);
 
   getHeaders(HTTP_headers, placeholder);
+
+  //I'll leave this here for debugging.
+  //Just prints out all headers we've gotten.
+  
   /*
-  std::map<std::string,std::string>::iterator iter;
-  for(iter = HTTP_headers->begin(); iter != HTTP_headers->end(); iter++)
+    std::map<std::string,std::string>::iterator iter;
+    for(iter = HTTP_headers->begin(); iter != HTTP_headers->end(); iter++)
     {
       printf("%s is this: %s\n", iter->first.c_str(), iter->second.c_str());
     }
-    /**/
+  /**/
 }
 
 char* HttpRequest::cutString(char * inStr, char * cutBy)

@@ -13,6 +13,7 @@ HttpResponse::HttpResponse(){
 }
 
 HttpResponse::~HttpResponse(){
+  //make sure we don't leak any memory
   if(headers != NULL)
     free(headers);
   if(body != NULL)
@@ -26,6 +27,7 @@ void HttpResponse::makeResponseBuffer(){
   response = (char*)malloc(ContentLength());
   char* movingBuffer = response;
 
+  //Collect the response string
   movingBuffer = appendMovingBuffer(movingBuffer,(char*)STATUS);
   movingBuffer = appendMovingBuffer(movingBuffer,(char *)" ");
   movingBuffer = appendMovingBuffer(movingBuffer,statusAndCode);
@@ -76,12 +78,17 @@ void HttpResponse::setBody(char* newBody, int bodyLength){
   if(body != NULL)
     free(body);
   this->bodyLength = bodyLength;
-  body = (char*) malloc(bodyLength);
-  memcpy(body, newBody, bodyLength);
+  
+  //Used to make a copy of newBody, but for speed, we'll just use the pointer.
+  body = newBody;
+  //body = (char*) malloc(bodyLength);
+  //memcpy(body, newBody, bodyLength);
+  
   return;
 }
 
 void HttpResponse::SetStatusCode(const int statusCode)
 {
+  //Looks up the status code in the Constants namespace and sets it.
   statusAndCode = Constants::RESPONSE_CODES.find(statusCode)->second.c_str();
 }

@@ -59,11 +59,13 @@ const ServerSocket& ServerSocket::operator >> (string& s) const
    * security vulnerabilities (DDOS attacks)
    */
   
+  //We'll put this back once the config is done.
+  /*
     if (! Socket::recv(s))
     {
       throw new SocketException("Could not read from socket.");
     }
-  
+  */
   return *this;
 }
 

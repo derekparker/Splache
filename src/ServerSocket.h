@@ -17,22 +17,34 @@ using namespace std;
 
 class ServerSocket : private Socket
 {
-  Log *logger;
-public:
-    ServerSocket (int port);
-    ServerSocket (){};
-    virtual ~ServerSocket();
-    
-    const ServerSocket& operator << (const string&) const;
-    const ServerSocket& operator >> (string&) const;
-    ServerSocket& operator << (HttpResponse*);
-    ServerSocket& operator >> (HttpRequest*);
+  //Log *logger;
 
-    void accept (ServerSocket*);
-    void close (ServerSocket*);
-    void self_close ();
-    sockaddr_in remoteAddr(){return Socket::remoteAddr();}
-    void setLogger(Log* logger){this->logger = logger;}
+ public:
+  //Open and listen on the port
+  ServerSocket (int port);
+
+  ServerSocket (){};
+  virtual ~ServerSocket();
+
+  //overloading the stream operators
+  const ServerSocket& operator << (const string&) const;
+  const ServerSocket& operator >> (string&) const;
+  ServerSocket& operator << (HttpResponse*);
+  ServerSocket& operator >> (HttpRequest*);
+  
+  //Accept an incoming connection into a new socket.
+  void accept (ServerSocket*);
+
+  //Close a socket
+  void close (ServerSocket*);
+  
+  //Close self
+  void self_close ();
+
+  //get the remote address
+  sockaddr_in remoteAddr(){return Socket::remoteAddr();}
+
+  //void setLogger(Log* logger){this->logger = logger;}
 };
 
 #endif

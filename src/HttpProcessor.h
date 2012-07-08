@@ -10,17 +10,38 @@
 #include <algorithm>
 
 class HttpProcessor{
+  //request:     Pointer to the request we got from the client
+  //siteroot:    String representing the root of the site.
+  //defaultPage: The default file the processor will look for 
+  //             if the request specifies a directory
+  //             dynamically allocated
   const HttpRequest* request;
   const char* siteroot;
   char* defaultPage;
+
+  //Get the filename specified by the request
+  //Returns a pointer to a new string. 
+  //RETURN VALUE MUST BE FREED.
+  char* getFilename(char* requestFile);
+
+  //Get the file extension of a file
+  //DONT FREE! All we're really doing
+  //is getting a pointer to some place
+  //within the pathString
+  char* getFileExtension(char* pathString);
+
  public:
   HttpProcessor();
-  HttpProcessor(const HttpRequest &request, char* site);
+  HttpProcessor(const HttpRequest &request, char* site); //Request from client, site root
   ~HttpProcessor();
+
+  //Set the default page
   void setDefaultPage(char* defaultPage);
+
+  //Generate a response object to send to the client
   void makeResponse(HttpResponse &response);
-  char* getFilename(char* requestFile);
-  char* getFileExtension(char* pathString);
+
+  //creates an error response when something goes wrong
   void makeErrorResponse(int status, HttpResponse &response);
 };
 

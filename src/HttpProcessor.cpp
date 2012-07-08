@@ -7,6 +7,7 @@ HttpProcessor::HttpProcessor()
 }
 HttpProcessor::~HttpProcessor()
 {
+  //make sure we don't leak the defaultPage
   if(defaultPage != NULL)
     free(defaultPage);
 }
@@ -20,6 +21,7 @@ HttpProcessor::HttpProcessor(const HttpRequest &request, char* site)
 
 void HttpProcessor::setDefaultPage(char* page)
 {
+  //make sure we don't leak the defaultPage
   if(defaultPage != NULL)
     free(defaultPage);
   defaultPage = (char*)malloc(strlen(page) + 1);
@@ -28,6 +30,7 @@ void HttpProcessor::setDefaultPage(char* page)
 
 void HttpProcessor::makeErrorResponse(int status, HttpResponse &response)
 {
+  //We'll make errors customizable at some point. For now this will do.
   response = HttpResponse();
   char* body = (char*)"<html><head></head><body><H1>Error</H1></body></html>";
   response.setBody(body, strlen(body));
@@ -44,29 +47,50 @@ void HttpProcessor::makeResponse(HttpResponse &response)
     
     char* filepath = getFilename(request->file);
     char* fileExt = getFileExtension(filepath);
-
-    FILE * file; //(filepath, std::ifstream::binary);
+    
+    //Get file
+    FILE * file;
     file = fopen(filepath, "rb");
+    free(filepath);
+
     if( file == NULL )
       {
 	makeErrorResponse(404, response);
       }
     else
       {
+
+	/*
+	  TODO:
+	  Check file extension against configuration.
+	  IF the file matches an extension in the config,
+	      Run CGI on file and get results.
+	  ELSE
+	      Do Following:
+	*/
+	
+	//Get the filelength
 	fseek(file, 0, SEEK_END);
 	int size = ftell(file);
 	rewind(file);
 
+	//read the file into the buffer
 	char* fileBuff = (char*)malloc(size);
-
 	fread(fileBuff, size, 1, file);
 	fclose(file);
-	
+
+	/*
+	  End If
+	 */
+
+
+	//initialize the response, set body and status
 	response = HttpResponse();
 	response.setBody((char*)fileBuff,size);
-	free(fileBuff);
+	//free(fileBuff);
 	response.SetStatusCode(200);
 
+	//Get the Mimetype
 	std::string mimeType = Constants::MIME_TYPES.find(fileExt)->first;
 
 	if( mimeType != "")
@@ -77,43 +101,27 @@ void HttpProcessor::makeResponse(HttpResponse &response)
 	    response.addHeader(contentType);
 	  }
 	
-	/*
-	if ((*request->HTTP_headers)[std::string("Connection")] == "keep-alive")
-	  response.addHeader((char*)"Connection: keep-alive");
-	else
-	  response.addHeader((char*)"Connection: close");
-	*/
 
-	if((*request->HTTP_headers)[std::string("connection")] == "close")
-	  response.addHeader((char*)"Connection: close");
-
+	{
+	  //JUST CHANGED from the commented below. If clients start acting funny,
+	  //Try checking this out.
+	  if ((*request->HTTP_headers)[std::string("Connection")] == "keep-alive")
+	    response.addHeader((char*)"Connection: keep-alive");
+	  else
+	    response.addHeader((char*)"Connection: close");
+	  
+	  //if((*request->HTTP_headers)[std::string("connection")] == "close")
+	  //  response.addHeader((char*)"Connection: close");
+	}
+	
+	//Set Content-Length header. Sometimes we won't need this.
+	//I'll have to read more about when we need this.
 	int contentLength = response.BodyLength();
 	char contentLengthstr[50];
 	sprintf(contentLengthstr,"Content-Length: %d",contentLength);
 	response.addHeader(contentLengthstr);
-	
-	/*
-	int contentLength = response.ContentLength();
-	char contentLengthstr[50];
-	
-	sprintf(contentLengthstr,"Content-Length: %d", contentLength);
-	
-	int newContentLength = contentLength + strlen(contentLengthstr)+2;
-
-	char newContentLengthstr[50];
-	sprintf(newContentLengthstr, "Content-Length: %d", newContentLength);
-
-	while(strlen(newContentLengthstr) > strlen(contentLengthstr))
-	  {
-	    strcpy(contentLengthstr,newContentLengthstr);
-	    newContentLength = contentLength + strlen(newContentLengthstr)+2;
-	    sprintf(newContentLengthstr, "Content-Length: %d", newContentLength);
-	  }
-	response.addHeader(newContentLengthstr);
-	/**/
-	
-     }
-    free(filepath);
+      }
+    
 }
 
 char* HttpProcessor::getFilename(char* requestFile)
