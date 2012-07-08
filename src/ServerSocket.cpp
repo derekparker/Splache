@@ -58,8 +58,12 @@ const ServerSocket& ServerSocket::operator >> (string& s) const
    * connections can be bad and lead to massive 
    * security vulnerabilities (DDOS attacks)
    */
-  
-  //We'll put this back once the config is done.
+  /*
+    We'll put this back once the config is done.
+    If you want to keep this, we need to check the errno
+    to see if the socket has an error or if it has timed out.
+    We don't want to log timeouts I don't think.
+  */
   /*
     if (! Socket::recv(s))
     {
