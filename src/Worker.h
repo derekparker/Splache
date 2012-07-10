@@ -1,5 +1,5 @@
-#ifndef H_SESSION
-#define H_SESSION
+#ifndef H_WORKER
+#define H_WORKER
 
 #include "HttpResponse.h"
 #include "HttpRequest.h"
@@ -14,20 +14,26 @@
 #include <map>
 #include <pthread.h>
 
-class Session{
-  //socket:        The socket we'll be communicating through
+class Worker{
+  //server_socket: The listening socket
   //trafficLogger: The logger we'll use to log traffic on
   //errorLogger:   The logger we'll use to log errors on
-  ServerSocket *socket;
+  ServerSocket *server_socket;
   Log *trafficLogger;
   Log *errorLogger;
-  
+  bool shouldRun;
+
+  //Handle a socket that's accepted a connection.
+  bool processConnection(ServerSocket &socket);
+
  public:
-  Session(ServerSocket*, Log*, Log*);
-  ~Session(){ delete(socket); }
+  Worker(ServerSocket*, Log*, Log*);
+  ~Worker(){}
 
   //Start receiving requests
   void run();
+  void kill();
+
 };
 
 #endif

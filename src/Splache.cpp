@@ -12,6 +12,9 @@
 //#include <sys/socket.h>
 //#include <netinet/in.h>
 
+#define INITIAL_THREADS 50
+
+
 static void daemonize();
 void *spawn_thread(void*);
 
@@ -43,6 +46,8 @@ int main(int argc, char* argv[])
     Log errorLogger(PATH_TO_LOGFILE, &errorLoglock);
     Log trafficLogger(PATH_TO_TRAFFICLOG, &trafficLoglock);
 
+    auto workers = std::list<Worker*>();
+
     //daemonize after logs start to give non-logged operations a chance to report errors.
     daemonize();
 
@@ -51,30 +56,50 @@ int main(int argc, char* argv[])
 	//Start listening on port. Port should be configurable eventually.
         ServerSocket server(80);     
 	
+
+	/*
+	  Instead of spawning and letting die threads for each connection, we'll use a worker thread pool, 
+	  as that seems to be the standard, and a more stable design from what I've read.
+	*/
+	pthread_t newThread;
+	for(int i = 0; i < INITIAL_THREADS; i++)
+	  {
+	    Worker *w = new Worker(&server,&trafficLogger, &errorLogger);
+	    workers.push_back(w);
+	    int error = pthread_create(&newThread,NULL,spawn_thread,(void*)w);
+	    if(error != 0)
+	      printf("Thread Error");
+	  }
+
+	pthread_join(newThread,NULL);
+
 	//Begin looping
-        while (true) 
-        {
+	//        while (true) 
+	// {
+
 	  //Create new socket to accept on.
-	  ServerSocket *sock = new ServerSocket();
+	  //ServerSocket *sock = new ServerSocket();
 	  
 	  //Accept connection. This blocks execution
-	  server.accept(sock);
-
+	  //server.accept(sock);
+	  
+	  /*
 	  //Create our session and spawn handler thread
 	  Session *s = new Session(sock, &trafficLogger, &errorLogger);
 	  pthread_t newThread;
 	  int error = pthread_create(&newThread,NULL,spawn_thread,(void*)s);
 	  if(error != 0)
 	    printf("Thread Error");
-        }
-    }
-  
+	  */
+        //}
+      }
+    
     catch (SocketException *e) 
-    {
+      {
         e->logExceptionToFile(errorLogger);
         delete(e);
-    }
-  
+      }
+    
     return 0;
 }
 
@@ -110,8 +135,8 @@ static void daemonize()
 void *spawn_thread(void *arg)
 {
     printf("Spawning Thread\n");
-    Session *session = (Session*)arg;
-    session->run();
-    delete(session);
+    Worker *worker = (Worker*)arg;
+    worker->run();
+    delete(worker);
     printf("Thread dying.\n");
 }

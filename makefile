@@ -9,7 +9,7 @@ OBJ = object/Splache.o \
 	object/Log.o \
 	object/GeneralException.o \
 	object/HttpProcessor.o \
-	object/Session.o \
+	object/Worker.o \
 	object/ConfigParser.o \
 	object/FileHandler.o
 
@@ -30,7 +30,7 @@ splache : pre-build $(OBJ)
 	-@rm $(BINNAME)
 	ln -s bin/$(BINNAME) $(BINNAME)
 
-object/Splache.o : src/Splache.h src/Splache.cpp src/ConfigParser.h src/ConfigParser.cpp src/Socket.h src/HttpResponse.h src/HttpRequest.h src/ServerSocket.h src/SocketException.h src/Log.h src/ConfigValues.h src/HttpProcessor.h src/Session.h
+object/Splache.o : src/Splache.h src/Splache.cpp src/ConfigParser.h src/ConfigParser.cpp src/Socket.h src/HttpResponse.h src/HttpRequest.h src/ServerSocket.h src/SocketException.h src/Log.h src/ConfigValues.h src/HttpProcessor.h src/Worker.h
 	$(CXX) -c src/Splache.cpp -o object/Splache.o
 
 object/Socket.o : src/Socket.h src/Socket.cpp
@@ -51,8 +51,8 @@ object/ServerSocket.o : src/ServerSocket.h src/ServerSocket.cpp src/Socket.h src
 object/HttpProcessor.o : src/HttpProcessor.h src/HttpProcessor.cpp src/HttpRequest.h src/HttpResponse.h src/Constants.h src/FileHandler.h
 	$(CXX) -c src/HttpProcessor.cpp -o object/HttpProcessor.o
 
-object/Session.o : src/Session.h src/Session.cpp src/HttpResponse.h src/HttpRequest.h src/HttpProcessor.h src/Socket.h src/ServerSocket.h src/SocketException.h src/HttpException.h src/ConfigValues.h src/Log.h
-	$(CXX) -c src/Session.cpp -o object/Session.o
+object/Worker.o : src/Worker.h src/Worker.cpp src/HttpResponse.h src/HttpRequest.h src/HttpProcessor.h src/Socket.h src/ServerSocket.h src/SocketException.h src/HttpException.h src/ConfigValues.h src/Log.h
+	$(CXX) -c src/Worker.cpp -o object/Worker.o
 
 object/GeneralException.o: src/GeneralException.h src/GeneralException.cpp
 	$(CXX) -c src/GeneralException.cpp -o object/GeneralException.o

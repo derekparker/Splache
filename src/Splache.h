@@ -8,7 +8,7 @@
 #include <iostream>
 #include <sys/stat.h>
 #include <pthread.h>
-#include <queue>
+#include <list>
 #include <string.h>
 
 #include "HttpResponse.h"
@@ -20,7 +20,8 @@
 #include "ConfigParser.h"
 #include "ConfigValues.h"
 #include "Log.h"
-#include "Session.h"
+//#include "Session.h"
+#include "Worker.h"
 
 #ifndef _Splache_h
 #define _Splache_h
