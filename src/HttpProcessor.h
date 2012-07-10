@@ -5,6 +5,7 @@
 #include "HttpResponse.h"
 #include "SocketException.h"
 #include "Constants.h"
+#include "FileHandler.h"
 #include <iostream>
 #include <fstream>
 #include <algorithm>

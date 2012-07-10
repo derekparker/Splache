@@ -44,49 +44,25 @@ void HttpProcessor::makeResponse(HttpResponse &response)
 {
     if(request == NULL)
       throw new SocketException("No request to process.");
-    
+
+    FileHandler file = FileHandler();
     char* filepath = getFilename(request->file);
     char* fileExt = getFileExtension(filepath);
-    
-    //Get file
-    FILE * file;
-    file = fopen(filepath, "rb");
+    char* fileBuff = file.getFile(filepath);
+    int size = file.size;
+
     free(filepath);
 
-    if( file == NULL )
+    if(fileBuff == NULL)
       {
 	makeErrorResponse(404, response);
       }
     else
       {
-
-	/*
-	  TODO:
-	  Check file extension against configuration.
-	  IF the file matches an extension in the config,
-	      Run CGI on file and get results.
-	  ELSE
-	      Do Following:
-	*/
-	
-	//Get the filelength
-	fseek(file, 0, SEEK_END);
-	int size = ftell(file);
-	rewind(file);
-
-	//read the file into the buffer
-	char* fileBuff = (char*)malloc(size);
-	fread(fileBuff, size, 1, file);
-	fclose(file);
-
-	/*
-	  End If
-	 */
-
-
 	//initialize the response, set body and status
 	response = HttpResponse();
 	response.setBody((char*)fileBuff,size);
+	//Don't free it. response object frees it on destruction.
 	//free(fileBuff);
 	response.SetStatusCode(200);
 
