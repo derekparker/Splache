@@ -8,7 +8,7 @@
 
 using namespace std;
 
-Log::Log(char* logfile, pthread_mutex_t *mutex)
+Log::Log(const char* logfile, pthread_mutex_t *mutex)
 {
     loglock = mutex;
     m_stream.open(logfile, ios::app);

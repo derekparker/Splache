@@ -11,7 +11,7 @@
 #include <iostream>
 #include <fstream>
 
-#include "ConfigValues.h"
+//#include "ConfigValues.h"
 
 /**
  * Class to parse through the config file and
@@ -25,20 +25,25 @@
  *
  */
 
+//#define PATH_TO_CONFIG = "../conf/Splache.conf";
+
 class ConfigParser
 {
 private:
-    const char* PATH_TO_CONFIG = "../conf/Splache.conf";
-    static const int MAX_SIZE = 33; // 32 for string + 1 for null terminator
+    static constexpr char* PATH_TO_CONFIG = (char*)"../conf/Splache.conf";
+    static const int MAX_SIZE = 1024; // 1023 for string + 1 for null terminator
+                                      // I made this longer because it was cutting off my 
+                                      // long log paths.
     char buf[1024];
     char ch = ' ';
     char key[MAX_SIZE];
     char val[MAX_SIZE];
+    std::ifstream config;
     
 public:
     ConfigParser();
     ~ConfigParser();
     
-    void parseConfigFile(map<char*, char*, config::cmp_str>& configMap);
+    void parseConfigFile(std::map<std::string, std::string>& configMap);
 };
 #endif

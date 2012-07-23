@@ -1,3 +1,5 @@
+#include "FileHandler.h"
+
 char* FileHandler::getFile(const char* filepath)
 {
   //This is where we'll bring access control, caching, and CGI/Scripting in.

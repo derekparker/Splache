@@ -1,6 +1,9 @@
 #ifndef H_FILEHANDLER
 #define H_FILEHANDLER
 
+#include <stdio.h>
+#include <stdlib.h>
+
 class FileHandler{
 
  public:

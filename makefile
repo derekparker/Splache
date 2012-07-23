@@ -11,7 +11,8 @@ OBJ = object/Splache.o \
 	object/HttpProcessor.o \
 	object/Worker.o \
 	object/ConfigParser.o \
-	object/FileHandler.o
+	object/FileHandler.o \
+	object/ConfigValues.o
 
 all: splache
 
@@ -62,3 +63,6 @@ object/ConfigParser.o : src/ConfigParser.h src/ConfigParser.cpp src/ConfigValues
 
 object/FileHandler.o : src/FileHandler.h src/FileHandler.cpp
 	$(CXX) -c src/FileHandler.cpp -o object/FileHandler.o
+
+object/ConfigValues.o : src/ConfigValues.h src/ConfigValues.cpp
+	$(CXX) -c src/ConfigValues.cpp -o object/ConfigValues.o

@@ -12,7 +12,7 @@ HttpProcessor::~HttpProcessor()
     free(defaultPage);
 }
 
-HttpProcessor::HttpProcessor(const HttpRequest &request, char* site)
+HttpProcessor::HttpProcessor(const HttpRequest &request, const char* site)
 {
   this->request = &request;
   siteroot = site;
@@ -32,7 +32,8 @@ void HttpProcessor::makeErrorResponse(int status, HttpResponse &response)
 {
   //We'll make errors customizable at some point. For now this will do.
   response = HttpResponse();
-  char* body = (char*)"<html><head></head><body><H1>Error</H1></body></html>";
+  char* body = (char*)malloc(54);
+  strcpy(body,"<html><head></head><body><H1>Error</H1></body></html>");
   response.setBody(body, strlen(body));
   response.SetStatusCode(status);
   response.addHeader((char*)"Content-Type: text/html; charset=UTF-8");
@@ -47,7 +48,7 @@ void HttpProcessor::makeResponse(HttpResponse &response)
 
     FileHandler file = FileHandler();
     char* filepath = getFilename(request->file);
-    char* fileExt = getFileExtension(filepath);
+    const char* fileExt = getFileExtension(filepath);
     char* fileBuff = file.getFile(filepath);
     int size = file.size;
 
@@ -67,13 +68,13 @@ void HttpProcessor::makeResponse(HttpResponse &response)
 	response.SetStatusCode(200);
 
 	//Get the Mimetype
-	std::string mimeType = Constants::MIME_TYPES.find(fileExt)->first;
+	const char* mimeType = Constants::MIME_TYPES.find(fileExt)->second.c_str();
 
 	if( mimeType != "")
 	  {
 	    char contentType[50];
 	    strcpy(contentType, (char*)"Content-Type: ");
-	    strcat(contentType, Constants::MIME_TYPES.find(fileExt)->second.c_str());
+	    strcat(contentType, mimeType);
 	    response.addHeader(contentType);
 	  }
 	

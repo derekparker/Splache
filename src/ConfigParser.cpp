@@ -8,29 +8,32 @@
 
 ConfigParser::ConfigParser()
 {
-    ifstream config(PATH_TO_CONFIG);
+  config.open(PATH_TO_CONFIG, std::ifstream::in);
 }
-ConfigParser:~ConfigParser()
+ConfigParser::~ConfigParser()
 {
     config.close();
 }
 
-ConfigParser::parseConfigFile(map<std::string, std::string>& configMap)
+void ConfigParser::parseConfigFile(std::map<std::string, std::string>& configMap)
 {
-    while ( !config.eof() )
+  while ( !config.eof() )
     {
-        ch = config.get();
-        if (ch != '#' && ch != '\n')
+      ch = config.peek();
+      if (ch != '#' && ch != '\n' && ch != (char)0)
         {
-            config.getline(buf, sizeof(buf));
-            sscanf(buf, "%32s %*s %32s", key, val);
-            configMap[key] = val;
+	  config.getline(buf, sizeof(buf));
+	  sscanf(buf, "%1024s %*s %1024s", key, val);
+	  configMap[key] = val;
         }
-        config.ignore(sizeof(buf),'\n');
-        ch = config.peek();
-        while(ch==' ' && ch=='\n'){
-            config.ignore(sizeof(buf),'\n');
-            ch = config.peek();
-        }
+      else
+	{
+	  config.ignore(sizeof(buf),'\n');
+	}
+      //ch = config.peek();
+      //while(ch==' ' && ch=='\n'){
+      //    config.ignore(sizeof(buf),'\n');
+      //    ch = config.peek();
+      ////}
     }
 }

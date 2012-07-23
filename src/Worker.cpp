@@ -41,7 +41,7 @@ bool Worker::processConnection(ServerSocket &socket)
   //The three objects we'll be using to handle requests
   HttpRequest request = HttpRequest();
   HttpResponse response = HttpResponse();
-  HttpProcessor processor = HttpProcessor();
+  HttpProcessor processor; //= HttpProcessor(config::configValues["WWW_ROOT"].c_str());
   bool open;
   
   try{
@@ -54,7 +54,7 @@ bool Worker::processConnection(ServerSocket &socket)
       return false;
       	
     //This will come from the configuration eventually.
-    processor = HttpProcessor(request, (char*)"/home/kyle/Documents/CodeBase/www");
+    processor = HttpProcessor(request, config::configValues["WWW_ROOT"].c_str());//(char*)"/home/kyle/Documents/CodeBase/www");
     processor.setDefaultPage((char*)"index.html");
     processor.makeResponse(response);
     

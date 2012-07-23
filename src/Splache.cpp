@@ -18,6 +18,7 @@
 static void daemonize();
 void *spawn_thread(void*);
 
+
 int main(int argc, char* argv[]) 
 {  
     /**
@@ -31,7 +32,7 @@ int main(int argc, char* argv[])
     delete(parser);  // I want to destroy it now because the class destructer does some io cleanup
     
     char* PATH_TO_TRAFFICLOG = (char*)"../logs/splache.traffic";
-    char* PATH_TO_LOGFILE = config::configValues["PATH_TO_LOGFILE"];
+    const char* PATH_TO_LOGFILE = config::configValues["PATH_TO_LOGFILE"].c_str();
 
     //These are the mutexes for the logs.
     //They are used to prevent the handler threads from logging over eachother
@@ -49,7 +50,7 @@ int main(int argc, char* argv[])
     auto workers = std::list<Worker*>();
 
     //daemonize after logs start to give non-logged operations a chance to report errors.
-    daemonize();
+    //daemonize();
 
     try 
       {
@@ -123,7 +124,7 @@ static void daemonize()
         exit(1);
   
     //Change working directory.
-    if(chdir(config::configValues["WORKING_DIRECTORY"]) < 0)
+    if(chdir(config::configValues["WORKING_DIRECTORY"].c_str()) < 0)
         exit(1);
 
     //Redirect standard IO streams to null.

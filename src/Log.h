@@ -16,7 +16,7 @@
 class Log
 {
  public:
-  Log(char* logfile, pthread_mutex_t* mutex);
+  Log(const char* logfile, pthread_mutex_t* mutex);
   ~Log();
   
   //log an exception

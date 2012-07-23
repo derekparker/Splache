@@ -9,11 +9,12 @@
 #define _configValues_h
 
 #include <map>
-#include "ConfigParser.h"
 #include <string.h>
+#include <string>
 
 namespace config
 {
+  /*
     struct cmp_str
     {
        bool operator()(const char *a, const char *b)
@@ -21,8 +22,11 @@ namespace config
           return strcmp(a, b) < 0;
        }
     };
-
-    std::map<char*, char*, cmp_str> configValues;
+  */
+  
+  //Had to do this, otherwise each .o file had its own instance of "configValues"
+  //configValues is actually declared in configValues.cpp.
+    extern std::map<std::string, std::string> configValues;
 }
 
 #endif

@@ -33,7 +33,7 @@ class HttpProcessor{
 
  public:
   HttpProcessor();
-  HttpProcessor(const HttpRequest &request, char* site); //Request from client, site root
+  HttpProcessor(const HttpRequest &request, const char* site); //Request from client, site root
   ~HttpProcessor();
 
   //Set the default page
