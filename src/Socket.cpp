@@ -9,6 +9,17 @@
 #include <errno.h>
 
 /**
+ * This is just for when I compile it on my mac.
+ * MSG_NOSIGNAL is a linux flag.
+ */
+
+#ifdef __APPLE__
+#define NOSIGNAL SO_NOSIGPIPE
+#else
+#define NOSIGNAL MSG_NOSIGNAL
+#endif
+
+/**
  * Implementation of the Socket class.
  * It basically covers pretty standard functionality including
  * recv(), bind(), etc... but it wraps the standard function calls
@@ -119,7 +130,7 @@ bool Socket::self_close() const
 
 bool Socket::send(const std::string s) const
 {
-    int status = ::send (m_sock, s.c_str(), s.size(), MSG_NOSIGNAL);
+    int status = ::send (m_sock, s.c_str(), s.size(), NOSIGNAL);
     if (status == -1)
         return false;
     else
@@ -128,7 +139,7 @@ bool Socket::send(const std::string s) const
 
 bool Socket::send(const char* data, const int size) const
 {
-  int status = ::send(m_sock, data, size, MSG_NOSIGNAL);
+  int status = ::send(m_sock, data, size, NOSIGNAL);
   if(status == -1)
     return false;
   else
@@ -174,7 +185,7 @@ bool Socket::connect (const std::string host, const int port)
     if (status == 0)
         return true;
     else
-        return false;
+      return false;
 }
 
 void Socket::set_non_blocking(const bool b)

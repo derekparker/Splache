@@ -55,7 +55,7 @@ int main(int argc, char* argv[])
     try 
       {
 	//Start listening on port. Port should be configurable eventually.
-        ServerSocket server(80);     
+        ServerSocket server(30000);     
 	
 
 	/*
