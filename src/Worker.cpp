@@ -53,8 +53,7 @@ bool Worker::processConnection(ServerSocket &socket)
     if(!request.isValid())
       return false;
       	
-    //This will come from the configuration eventually.
-    processor = HttpProcessor(request, config::configValues["WWW_ROOT"].c_str());//(char*)"/home/kyle/Documents/CodeBase/www");
+    processor = HttpProcessor(request, config::configValues["WWW_ROOT"].c_str());
     processor.setDefaultPage((char*)"index.html");
     processor.makeResponse(response);
     
