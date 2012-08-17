@@ -32,8 +32,7 @@ class ConfigParser
 private:
     static constexpr char* PATH_TO_CONFIG = (char*)"../conf/Splache.conf";
     static const int MAX_SIZE = 1024; // 1023 for string + 1 for null terminator
-                                      // I made this longer because it was cutting off my 
-                                      // long log paths.
+
     char buf[1024];
     char ch = ' ';
     char key[MAX_SIZE];
