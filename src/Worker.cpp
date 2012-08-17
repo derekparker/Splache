@@ -4,8 +4,8 @@ Worker::Worker(ServerSocket* listening_socket, Log* trafficLog, Log* errorLog)
 {
   server_socket = listening_socket;
   trafficLogger = trafficLog;
-  errorLogger = errorLog;
-  shouldRun = true;
+  errorLogger   = errorLog;
+  shouldRun     = true;
 }
 
 void Worker::run()
@@ -39,9 +39,9 @@ void Worker::run()
 bool Worker::processConnection(ServerSocket &socket)
 {
   //The three objects we'll be using to handle requests
-  HttpRequest request = HttpRequest();
+  HttpRequest request   = HttpRequest();
   HttpResponse response = HttpResponse();
-  HttpProcessor processor; //= HttpProcessor(config::configValues["WWW_ROOT"].c_str());
+  HttpProcessor processor;
   bool open;
   
   try{
@@ -85,9 +85,7 @@ bool Worker::processConnection(ServerSocket &socket)
       socket<<&response;
       delete(e);
     }
-  
   return open; 
-
 }
 
 void Worker::kill(){
