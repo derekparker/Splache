@@ -15,20 +15,16 @@ void *spawn_thread(void*);
 
 int main(int argc, char* argv[]) 
 {  
-  std::cout << "Initializing server" << std::endl;
-  std::cout << "..." << std::endl;
+  std::cout << "Initializing server..." << std::endl;
 
-  // Parse the config file
+  // parse the config file
   ConfigParser *parser = new ConfigParser;
   parser->parseConfigFile(config::configValues);
-  delete(parser);  // Destroy for io cleanup
+  delete(parser);  // destroy for io cleanup
   
-
-  const char* PATH_TO_TRAFFICLOG = (char*)"../logs/splache.traffic";
+  const char* PATH_TO_TRAFFICLOG = (char*)"log/splache.traffic";
   const char* PATH_TO_LOGFILE    = config::configValues["PATH_TO_LOGFILE"].c_str();
   const int   PORT               = atoi( config::configValues["PORT"].c_str() );
-
-  std::cout << PORT << std::endl;
   
   pthread_mutex_t errorLoglock;
   pthread_mutex_t trafficLoglock;
@@ -37,7 +33,7 @@ int main(int argc, char* argv[])
   if(pthread_mutex_init(&trafficLoglock,NULL) != 0)
     printf("Error creating mutex.");
   
-  //Create the loggers.
+  // create the loggers.
   Log errorLogger(PATH_TO_LOGFILE, &errorLoglock);
   Log trafficLogger(PATH_TO_TRAFFICLOG, &trafficLoglock);
   
@@ -45,14 +41,10 @@ int main(int argc, char* argv[])
   
   try 
     {
-      std::cout << "win" << std::endl;
-      //Start listening on port carried from config file.
+      // start listening on port carried from config file.
       ServerSocket server( PORT );     
       
-      /*
-	Instead of spawning and letting die threads for each connection, we'll use a worker thread pool, 
-	as that seems to be the standard, and a more stable design from what I've read.
-      */
+      // start thread pool
       pthread_t newThread;
       for(int i = 0; i < INITIAL_THREADS; i++)
 	{

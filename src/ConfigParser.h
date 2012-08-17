@@ -11,26 +11,10 @@
 #include <iostream>
 #include <fstream>
 
-//#include "ConfigValues.h"
-
-/**
- * Class to parse through the config file and
- * set a map with key/value information based
- * on what is set in the config file.
- *
- * Definitely not finished, I will flesh out
- * the methods tomorrow, and determine the
- * best way to figure out the relative path
- * to the config file.
- *
- */
-
-//#define PATH_TO_CONFIG = "../conf/Splache.conf";
-
 class ConfigParser
 {
 private:
-    static constexpr char* PATH_TO_CONFIG = (char*)"../conf/Splache.conf";
+    static constexpr char* PATH_TO_CONFIG = (char*)"conf/Splache.conf";
     static const int MAX_SIZE = 1024; // 1023 for string + 1 for null terminator
 
     char buf[1024];

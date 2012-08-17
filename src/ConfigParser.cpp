@@ -17,23 +17,24 @@ ConfigParser::~ConfigParser()
 
 void ConfigParser::parseConfigFile(std::map<std::string, std::string>& configMap)
 {
-  while ( !config.eof() )
+  if ( config.is_open() )
     {
-      ch = config.peek();
-      if (ch != '#' && ch != '\n' && ch != (char)0)
-        {
-	  config.getline(buf, sizeof(buf));
-	  sscanf(buf, "%1024s %*s %1024s", key, val);
-	  configMap[key] = val;
-        }
-      else
+      while ( config.good() )
 	{
-	  config.ignore(sizeof(buf),'\n');
+	  ch = config.peek();
+	  if (ch != '#' && ch != '\n' && ch != (char)0)
+	    {
+	      config.getline(buf, sizeof(buf));
+	      sscanf(buf, "%1024s %*s %1024s", key, val);
+	      
+	      configMap[key] = val;
+	    }
+	  else
+	    {
+	      config.ignore(sizeof(buf),'\n');
+	    }
 	}
-      //ch = config.peek();
-      //while(ch==' ' && ch=='\n'){
-      //    config.ignore(sizeof(buf),'\n');
-      //    ch = config.peek();
-      ////}
     }
+
+  else std::cout << "Failed to open file." << std::endl;
 }
