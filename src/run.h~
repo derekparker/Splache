@@ -1,0 +1,11 @@
+#ifndef RUN_H
+#define RUN_H
+
+namespace run
+{
+  static void daemonize();
+
+  void *spawn_thread(void*);
+}
+
+#endif

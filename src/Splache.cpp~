@@ -10,6 +10,9 @@
 
 #define INITIAL_THREADS 50
 
+static void daemonize();
+void *spawn_thread(void*);
+
 int main(int argc, char* argv[]) 
 {  
   std::cout << "Initializing server..." << std::endl;
@@ -47,7 +50,7 @@ int main(int argc, char* argv[])
 	{
 	  Worker *w = new Worker(&server,&trafficLogger, &errorLogger);
 	  workers.push_back(w);
-	  int error = pthread_create(&newThread,NULL,run::spawn_thread,(void*)w);
+	  int error = pthread_create(&newThread,NULL,spawn_thread,(void*)w);
 	  if(error != 0)
 	    printf("Thread Error");
 	}
@@ -63,4 +66,42 @@ int main(int argc, char* argv[])
     }
   
   return 0;
+}
+
+static void daemonize()
+{
+  pid_t pid;
+  pid = fork();
+  if(pid < 0)
+    exit(-1);
+  
+  //If original process, exit.
+  if(pid > 0)
+    exit(0);
+  
+  //If we are executing this, we are the child process.
+  //Change the file usermask.
+  umask(0);
+  
+  //Create new group and make child the leader
+  if(setsid() < 0)
+    exit(1);
+  
+  //Change working directory.
+  if(chdir(config::configValues["WORKING_DIRECTORY"].c_str()) < 0)
+    exit(1);
+  
+  //Redirect standard IO streams to null.
+  freopen("/dev/null/", "r", stdin);
+  freopen("/dev/null/", "w", stdout);
+  freopen("/dev/null/", "w", stderr);
+}
+
+void *spawn_thread(void *arg)
+{
+  printf("Spawning Thread\n");
+  Worker *worker = (Worker*)arg;
+  worker->run();
+  delete(worker);
+  printf("Thread dying.\n");
 }

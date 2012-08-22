@@ -12,7 +12,8 @@ OBJ = object/Splache.o \
 	object/Worker.o \
 	object/ConfigParser.o \
 	object/FileHandler.o \
-	object/ConfigValues.o
+	object/ConfigValues.o \
+	object/run.o
 
 all: splache
 
@@ -31,7 +32,7 @@ splache : pre-build $(OBJ)
 	-@rm $(BINNAME)
 	ln -s bin/$(BINNAME) $(BINNAME)
 
-object/Splache.o : src/Splache.h src/Splache.cpp src/ConfigParser.h src/ConfigParser.cpp src/Socket.h src/HttpResponse.h src/HttpRequest.h src/ServerSocket.h src/SocketException.h src/Log.h src/ConfigValues.h src/HttpProcessor.h src/Worker.h
+object/Splache.o : src/Splache.h src/Splache.cpp src/ConfigParser.h src/ConfigParser.cpp src/Socket.h src/HttpResponse.h src/HttpRequest.h src/ServerSocket.h src/SocketException.h src/Log.h src/ConfigValues.h src/HttpProcessor.h src/Worker.h src/run.h
 	$(CXX) -c src/Splache.cpp -o object/Splache.o
 
 object/Socket.o : src/Socket.h src/Socket.cpp
@@ -66,3 +67,6 @@ object/FileHandler.o : src/FileHandler.h src/FileHandler.cpp
 
 object/ConfigValues.o : src/ConfigValues.h src/ConfigValues.cpp
 	$(CXX) -c src/ConfigValues.cpp -o object/ConfigValues.o
+
+object/run.o : src/run.h src/run.cpp
+	$(CXX) -c src/run.cpp -o object/run.o

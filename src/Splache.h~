@@ -23,7 +23,6 @@
 #include "Log.h"
 //#include "Session.h"
 #include "Worker.h"
-#include "run.h"
 
 #ifndef _Splache_h
 #define _Splache_h
