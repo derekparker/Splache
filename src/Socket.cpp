@@ -64,8 +64,9 @@ bool Socket::bind(const u_short port)
     m_addr.sin_addr.s_addr = INADDR_ANY;
     m_addr.sin_port = htons(port);
 
-    printf("%d\n",ntohs(m_addr.sin_port));
-    
+    //printf("%d\n",ntohs(m_addr.sin_port));
+    std::cout << "Opened Server on port " << ntohs(m_addr.sin_port) << std::endl;
+
     int bind_return = ::bind (m_sock, (struct sockaddr *) &m_addr, sizeof(m_addr) );
     
     if (bind_return == -1)
@@ -97,35 +98,36 @@ bool Socket::accept(Socket* new_socket) const
 {
     int addr_length = sizeof(new_socket->m_addr);
     new_socket->m_sock = 
-      ::accept(m_sock, (sockaddr *)&new_socket->m_addr, (socklen_t *) &addr_length);
+        ::accept(m_sock, (sockaddr *)&new_socket->m_addr, (socklen_t *) &addr_length);
     if (new_socket->m_sock <= 0)
         return false;
     struct timeval timeout;
     timeout.tv_sec = 15;
     timeout.tv_usec = 0;
     if(setsockopt(new_socket->m_sock,SOL_SOCKET,SO_RCVTIMEO, (char*)&timeout, sizeof(timeout)))
-      return false;
+        return false;
     return true;
 }
 
 bool Socket::close(Socket* activeSocket) const
 {
   
-  if(::close(activeSocket->m_sock) != 0)
+    if(::close(activeSocket->m_sock) != 0)
     {
-      return false;
+        return false;
     }
-  return true;
+    return true;
 }
 
 bool Socket::self_close() const
 {
-  if(::close(this->m_sock) != 0)
+    if(::close(this->m_sock) != 0)
     {
-      printf("%s\n",strerror(errno));
-      return false;
+        //printf("%s\n",strerror(errno));
+        std::cout << strerror(errno) << std::endl;
+        return false;
     }
-  return true;
+    return true;
 }
 
 bool Socket::send(const std::string s) const
@@ -139,11 +141,11 @@ bool Socket::send(const std::string s) const
 
 bool Socket::send(const char* data, const int size) const
 {
-  int status = ::send(m_sock, data, size, NOSIGNAL);
-  if(status == -1)
-    return false;
-  else
-    return true;
+    int status = ::send(m_sock, data, size, NOSIGNAL);
+    if(status == -1)
+        return false;
+    else
+        return true;
 }
 
 int Socket::recv (std::string& s) const
@@ -185,7 +187,7 @@ bool Socket::connect (const std::string host, const int port)
     if (status == 0)
         return true;
     else
-      return false;
+        return false;
 }
 
 void Socket::set_non_blocking(const bool b)

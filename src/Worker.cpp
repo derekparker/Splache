@@ -72,7 +72,7 @@ bool Worker::processConnection(ServerSocket &socket)
     *trafficLogger
       << trafficLogger->getDateTime()
       << " Remote: " << inet_ntoa(socket.remoteAddr().sin_addr)
-      << " requested " << request.getFile() 
+      << " requested " << (*request.HTTP_headers)["host"] << " " << request.getFile() 
       << " Status: "<< response.getStatusAndCode()
       <<endl;
 

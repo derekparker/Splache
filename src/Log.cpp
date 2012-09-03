@@ -16,9 +16,9 @@ Log::Log(const char* logfile, pthread_mutex_t *mutex, bool isVerbose)
     if(config::configValues["ERROR_VERBOSE"] == "true")
         if(!m_stream.is_open())
         {
-            printf("Could not open logfile: %s\n",logfile);
+            cout << "Could not open logfile: " << logfile << endl;
         }
-        else printf("%s opened for log.\n",logfile);
+        else cout << logfile << " opened for log." << endl;
 }
 
 void Log::logException(char* exceptionThrown)

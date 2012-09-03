@@ -37,6 +37,6 @@ namespace run
     Worker *worker = (Worker*)arg;
     worker->run();
     delete(worker);
-    printf("Thread dying.\n");
+    std::cout << "Thread dying." << std::endl;
   }
 }

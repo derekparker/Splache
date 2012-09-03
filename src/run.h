@@ -1,6 +1,6 @@
 #ifndef RUN_H
 #define RUN_H
-#include <stdio.h>
+#include <iostream>
 #include <pthread.h>
 #include "Worker.h"
 #include <sys/stat.h>
