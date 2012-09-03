@@ -19,8 +19,6 @@ int main(int argc, char* argv[])
   parser->parseConfigFile(config::configValues);
   delete(parser);  // destroy for io cleanup
 
-  cout << config::configValues["TEST_VAL"] << endl;
-
   if(config::configValues["GOOD_CONFIG"] == "false")
       return 1;
   
