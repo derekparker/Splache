@@ -12,11 +12,13 @@
 #include <string>
 #include <time.h>
 #include <pthread.h>
+#include "ConfigValues.h"
+
 
 class Log
 {
  public:
-  Log(const char* logfile, pthread_mutex_t* mutex);
+    Log(const char* logfile, pthread_mutex_t* mutex, bool isVerbose);
   ~Log();
   
   //log an exception
@@ -33,7 +35,9 @@ class Log
   template<class T> Log& operator<<(T const & out)
     {
       pthread_mutex_lock(loglock);
-      m_stream << out; 
+      m_stream << out;
+      if(config::configValues["ERROR_VERBOSE"] == "true")
+          std::cout<<out;
       pthread_mutex_unlock(loglock);
       return *this;
     }
@@ -41,6 +45,8 @@ class Log
     { 
       pthread_mutex_lock(loglock);
       func(m_stream);
+      if(config::configValues["ERROR_VERBOSE"] == "true")
+          func(std::cout);
       pthread_mutex_unlock(loglock);
       return *this;
     }
@@ -60,5 +66,6 @@ class Log
   std::ofstream m_stream;
   //std::string output;
   pthread_mutex_t *loglock;
+  bool verbose;
 };
 #endif

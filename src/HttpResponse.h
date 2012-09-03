@@ -64,6 +64,10 @@ class HttpResponse{
 
   //set the request status code
   void SetStatusCode(int statusCode);
+
+  //Get status and code
+  const char* getStatusAndCode();
+
 };
 
 #endif

@@ -1,7 +1,7 @@
 CXX = g++ -ggdb -std=c++11
 BINNAME = Splache
 LINKS= -lpthread
-OBJ = object/Splache.o \
+OBJ = 	object/Splache.o \
 	object/Socket.o \
 	object/HttpResponse.o \
 	object/HttpRequest.o \
@@ -13,7 +13,8 @@ OBJ = object/Splache.o \
 	object/ConfigParser.o \
 	object/FileHandler.o \
 	object/ConfigValues.o \
-	object/run.o
+	object/run.o \
+	object/Helper.o
 
 all: splache
 
@@ -44,7 +45,7 @@ object/Log.o : src/Log.h src/Log.cpp
 object/HttpResponse.o : src/HttpResponse.h src/HttpResponse.cpp src/Constants.h
 	$(CXX) -c src/HttpResponse.cpp -o object/HttpResponse.o
 
-object/HttpRequest.o : src/HttpRequest.h src/HttpRequest.cpp src/HttpException.h
+object/HttpRequest.o : src/HttpRequest.h src/HttpRequest.cpp src/HttpException.h src/Helper.h
 	$(CXX) -c src/HttpRequest.cpp -o object/HttpRequest.o
 
 object/ServerSocket.o : src/ServerSocket.h src/ServerSocket.cpp src/Socket.h src/HttpRequest.h src/HttpResponse.h src/SocketException.h
@@ -70,3 +71,6 @@ object/ConfigValues.o : src/ConfigValues.h src/ConfigValues.cpp
 
 object/run.o : src/run.h src/run.cpp
 	$(CXX) -c src/run.cpp -o object/run.o
+
+object/Helper.o : src/Helper.h src/Helper.cpp
+	$(CXX) -c src/Helper.cpp -o object/Helper.o

@@ -57,9 +57,9 @@ bool Worker::processConnection(ServerSocket &socket)
     processor.setDefaultPage((char*)"index.html");
     processor.makeResponse(response);
     
-    //If the response is an error, then close the connection.
+    //If the response is an error, then close the connection and log to traffic log.
     if(response.errorResponse == true)
-      open = false;
+        open = false;
     else if( (*request.HTTP_headers)[std::string("connection")] == "keep-alive")
       open = true;
     else
@@ -72,8 +72,10 @@ bool Worker::processConnection(ServerSocket &socket)
     *trafficLogger
       << trafficLogger->getDateTime()
       << " Remote: " << inet_ntoa(socket.remoteAddr().sin_addr)
-      << " requested " << request.file << endl;
-  
+      << " requested " << request.getFile() 
+      << " Status: "<< response.getStatusAndCode()
+      <<endl;
+
   }
   catch(HttpException *e)
     {

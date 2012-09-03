@@ -31,8 +31,8 @@ int main(int argc, char* argv[])
     printf("Error creating mutex.");
   
   // create the loggers.
-  Log errorLogger(PATH_TO_LOGFILE, &errorLoglock);
-  Log trafficLogger(PATH_TO_TRAFFICLOG, &trafficLoglock);
+  Log errorLogger(PATH_TO_LOGFILE, &errorLoglock, config::configValues["ERROR_VERBOSE"] == "true");
+  Log trafficLogger(PATH_TO_TRAFFICLOG, &trafficLoglock, config::configValues["TRAFFIC_VERBOSE"] == "true");
   
   auto workers = std::list<Worker*>();
   
@@ -43,6 +43,7 @@ int main(int argc, char* argv[])
       
       // start thread pool
       pthread_t newThread;
+      errorLogger<<"Creating "<<INITIAL_THREADS<<" threads..."<<std::endl;
       for(int i = 0; i < INITIAL_THREADS; i++)
 	{
 	  Worker *w = new Worker(&server,&trafficLogger, &errorLogger);

@@ -33,7 +33,7 @@ namespace run
 
   void *spawn_thread(void *arg)
   {
-    printf("Spawning Thread\n");
+      //printf("Spawning Thread\n");
     Worker *worker = (Worker*)arg;
     worker->run();
     delete(worker);

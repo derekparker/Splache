@@ -47,7 +47,7 @@ void HttpProcessor::makeResponse(HttpResponse &response)
       throw new SocketException("No request to process.");
 
     FileHandler file = FileHandler();
-    char* filepath = getFilename(request->file);
+    char* filepath = getFilename(request->getFile());
     const char* fileExt = getFileExtension(filepath);
     char* fileBuff = file.getFile(filepath);
     int size = file.size;
@@ -101,9 +101,9 @@ void HttpProcessor::makeResponse(HttpResponse &response)
     
 }
 
-char* HttpProcessor::getFilename(char* requestFile)
+char* HttpProcessor::getFilename(const char* requestFile) const
 {
-  char* finalchar = requestFile + strlen(requestFile)-1;
+  const char* finalchar = requestFile + strlen(requestFile)-1;
   char* filename;
   if(strcmp(finalchar,"/") == 0)
     {

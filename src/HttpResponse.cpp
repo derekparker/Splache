@@ -91,3 +91,8 @@ void HttpResponse::SetStatusCode(const int statusCode)
   //Looks up the status code in the Constants namespace and sets it.
   statusAndCode = Constants::RESPONSE_CODES.find(statusCode)->second.c_str();
 }
+
+const char* HttpResponse::getStatusAndCode()
+{
+    return statusAndCode;
+}
