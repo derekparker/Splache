@@ -15,8 +15,8 @@ class SocketException : public GeneralException
  public:
  
  SocketException(std::string s) : GeneralException(s){
-    printf("%s\n",s.c_str());
-    printf("%s\n",m_s.c_str());
+        //printf("%s\n",s.c_str());
+        //printf("%s\n",m_s.c_str());
   };
   //using GeneralException::GeneralException(std::string);
   ~SocketException(){};

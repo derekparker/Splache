@@ -35,6 +35,11 @@ void ConfigParser::parseConfigFile(std::map<std::string, std::string>& configMap
 	    }
 	}
     }
-
-  else std::cout << "Failed to open file." << std::endl;
+  else 
+  {
+      configMap["GOOD_CONFIG"] = "false";
+      configMap["TRAFFIC_VERBOSE"] = "true";
+      configMap["ERROR_VERBOSE"] = "true";
+      std::cout << "Failed to open config file: "<< PATH_TO_CONFIG << std::endl;
+  }
 }

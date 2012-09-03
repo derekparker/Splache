@@ -18,6 +18,9 @@ int main(int argc, char* argv[])
   ConfigParser *parser = new ConfigParser;
   parser->parseConfigFile(config::configValues);
   delete(parser);  // destroy for io cleanup
+
+  if(config::configValues["GOOD_CONFIG"] == "false")
+      return 1;
   
   const char* PATH_TO_TRAFFICLOG = (char*)"log/splache.traffic";
   const char* PATH_TO_LOGFILE    = config::configValues["PATH_TO_LOGFILE"].c_str();
@@ -26,9 +29,9 @@ int main(int argc, char* argv[])
   pthread_mutex_t errorLoglock;
   pthread_mutex_t trafficLoglock;
   if(pthread_mutex_init(&errorLoglock,NULL) != 0)
-    printf("Error creating mutex.");
+      std::cout << "Error creating mutex." << std::endl;
   if(pthread_mutex_init(&trafficLoglock,NULL) != 0)
-    printf("Error creating mutex.");
+      std::cout << "Error creating mutex." << std::endl;
   
   // create the loggers.
   Log errorLogger(PATH_TO_LOGFILE, &errorLoglock, config::configValues["ERROR_VERBOSE"] == "true");
@@ -50,7 +53,7 @@ int main(int argc, char* argv[])
 	  workers.push_back(w);
 	  int error = pthread_create(&newThread,NULL,run::spawn_thread,(void*)w);
 	  if(error != 0)
-	    printf("Thread Error");
+              std::cout << "Thread Error" << std::endl;
 	}
 
       pthread_join(newThread,NULL);
@@ -58,7 +61,7 @@ int main(int argc, char* argv[])
   
   catch (SocketException *e) 
     {
-      std::cout << "fail" << std::endl;
+        //std::cout << "fail" << std::endl;
       e->logExceptionToFile(errorLogger);
       delete(e);
     }
