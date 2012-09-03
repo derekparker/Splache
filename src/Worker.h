@@ -7,6 +7,7 @@
 #include "Socket.h"
 #include "ServerSocket.h"
 #include "SocketException.h"
+#include "ConfigParser.h"
 #include "ConfigValues.h"
 #include "Log.h"
 

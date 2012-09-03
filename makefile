@@ -54,7 +54,7 @@ object/ServerSocket.o : src/ServerSocket.h src/ServerSocket.cpp src/Socket.h src
 object/HttpProcessor.o : src/HttpProcessor.h src/HttpProcessor.cpp src/HttpRequest.h src/HttpResponse.h src/Constants.h src/FileHandler.h
 	$(CXX) -c src/HttpProcessor.cpp -o object/HttpProcessor.o
 
-object/Worker.o : src/Worker.h src/Worker.cpp src/HttpResponse.h src/HttpRequest.h src/HttpProcessor.h src/Socket.h src/ServerSocket.h src/SocketException.h src/HttpException.h src/ConfigValues.h src/Log.h
+object/Worker.o : src/Worker.h src/Worker.cpp src/HttpResponse.h src/HttpRequest.h src/HttpProcessor.h src/Socket.h src/ServerSocket.h src/SocketException.h src/HttpException.h src/ConfigValues.h src/Log.h src/ConfigParser.h
 	$(CXX) -c src/Worker.cpp -o object/Worker.o
 
 object/GeneralException.o: src/GeneralException.h src/GeneralException.cpp

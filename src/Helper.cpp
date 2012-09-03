@@ -11,4 +11,11 @@ namespace stringHelper{
         }
         return placeholder;
     }
+    
+    std::string *hostTrim(const char* inStr)
+    {
+        std::string *s = new std::string(inStr);
+        s->erase(s->find(":",0));
+    }
 }
+

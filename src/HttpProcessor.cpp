@@ -19,7 +19,7 @@ HttpProcessor::HttpProcessor(const HttpRequest &request, const char* site)
   defaultPage = NULL;
 }
 
-void HttpProcessor::setDefaultPage(char* page)
+void HttpProcessor::setDefaultPage(const char* page)
 {
   //make sure we don't leak the defaultPage
   if(defaultPage != NULL)

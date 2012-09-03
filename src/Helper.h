@@ -2,6 +2,7 @@
 #define HELPER_H
 
 #include <string.h>
+#include <string>
 
 namespace stringHelper{
 
@@ -11,6 +12,8 @@ namespace stringHelper{
     //a pointer to the second character.
     char* cutString(char*, char*);
     
+    //returns a host string with the port cut off.
+    std::string *hostTrim(const char*);
 }
 
 #endif

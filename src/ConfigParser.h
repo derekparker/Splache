@@ -10,6 +10,8 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <sstream>
+#include <string.h>
 
 class ConfigParser
 {
@@ -28,5 +30,12 @@ public:
     ~ConfigParser();
     
     void parseConfigFile(std::map<std::string, std::string>& configMap);
+    void parseConfigString(
+        std::map<std::string, std::string>& configMap,
+        std::string configString);
+    void parseStream(
+        std::map<std::string, std::string>& configMap,
+        std::istream *stream);
+
 };
 #endif

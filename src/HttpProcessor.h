@@ -37,7 +37,7 @@ class HttpProcessor{
   ~HttpProcessor();
 
   //Set the default page
-  void setDefaultPage(char* defaultPage);
+  void setDefaultPage(const char* defaultPage);
 
   //Generate a response object to send to the client
   void makeResponse(HttpResponse &response);
