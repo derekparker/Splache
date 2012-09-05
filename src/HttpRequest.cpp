@@ -65,17 +65,15 @@ void HttpRequest::setRequest(char* buffer){
     return;
 
   getHeaders(HTTP_headers, placeholder);
-
-  //I'll leave this here for debugging.
-  //Just prints out all headers we've gotten.
   
-  /*
-    std::map<std::string,std::string>::iterator iter;
-    for(iter = HTTP_headers->begin(); iter != HTTP_headers->end(); iter++)
+#if debug
+  // Print all headers
+  std::map<std::string,std::string>::iterator iter;
+  for(iter = HTTP_headers->begin(); iter != HTTP_headers->end(); iter++)
     {
       printf("%s is this: %s\n", iter->first.c_str(), iter->second.c_str());
     }
-  /**/
+#endif
 }
 
 void HttpRequest::getHeaders(std::map<std::string,std::string>* headerMap, char* headerList)
