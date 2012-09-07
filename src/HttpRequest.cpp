@@ -5,15 +5,15 @@
 
 #include "HttpRequest.h"
 
-HttpRequest::HttpRequest(char* buffer){
-  setRequest(buffer);
+HttpRequest::HttpRequest(){
+  request = NULL;
   method = NULL;
   file = NULL;
   HTTP_headers = NULL;
 }
 
-HttpRequest::HttpRequest(){
-  request = NULL;
+HttpRequest::HttpRequest(const char* buffer){
+  setRequest(buffer);
   method = NULL;
   file = NULL;
   HTTP_headers = NULL;
@@ -32,7 +32,7 @@ bool HttpRequest::isValid(){
   return true;
 }
 
-void HttpRequest::setRequest(char* buffer){
+void HttpRequest::setRequest(const char* buffer){
   request = (char*)malloc(strlen(buffer)+1);
   strcpy(request,buffer);
 
