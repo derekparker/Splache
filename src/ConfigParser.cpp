@@ -20,6 +20,8 @@ void ConfigParser::parseConfigFile(std::map<std::string, std::string>& configMap
   while ( !config.eof() )
     {
       ch = config.peek();
+      if (ch == -1)
+	return;
       if (ch != '#' && ch != '\n' && ch != (char)0)
         {
 	  config.getline(buf, sizeof(buf));
