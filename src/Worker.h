@@ -7,6 +7,7 @@
 #include "Socket.h"
 #include "ServerSocket.h"
 #include "SocketException.h"
+#include "ConfigParser.h"
 #include "ConfigValues.h"
 #include "Log.h"
 
@@ -19,8 +20,8 @@ class Worker{
   //trafficLogger: The logger we'll use to log traffic on
   //errorLogger:   The logger we'll use to log errors on
   ServerSocket *server_socket;
-  Log *trafficLogger;
-  Log *errorLogger;
+  Log  *trafficLogger;
+  Log  *errorLogger;
   bool shouldRun;
 
   //Handle a socket that's accepted a connection.

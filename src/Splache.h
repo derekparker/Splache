@@ -6,6 +6,7 @@
  */
 
 #include <iostream>
+#include <stdio.h>
 #include <sys/stat.h>
 #include <pthread.h>
 #include <list>
@@ -22,6 +23,9 @@
 #include "Log.h"
 //#include "Session.h"
 #include "Worker.h"
+#include "run.h"
+
+#define debug false
 
 #ifndef _Splache_h
 #define _Splache_h

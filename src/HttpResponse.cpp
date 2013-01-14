@@ -6,9 +6,9 @@
 #include "HttpResponse.h"
 
 HttpResponse::HttpResponse(){
-  headers = NULL;
-  body = NULL;
-  response = NULL;
+  headers       = NULL;
+  body          = NULL;
+  response      = NULL;
   errorResponse = false;
 }
 
@@ -58,8 +58,9 @@ void HttpResponse::addHeader(char* newHeader){
   int length;
   if(headers == NULL)
     {
-      length = strlen(newHeader)+1;
+      length  = strlen(newHeader)+1;
       headers = (char*)malloc(length);
+
       strcpy(headers,newHeader);
     }
   else
@@ -79,10 +80,8 @@ void HttpResponse::setBody(char* newBody, int bodyLength){
     free(body);
   this->bodyLength = bodyLength;
   
-  //Used to make a copy of newBody, but for speed, we'll just use the pointer.
+  // using pointer rather than making a copy, for speed
   body = newBody;
-  //body = (char*) malloc(bodyLength);
-  //memcpy(body, newBody, bodyLength);
   
   return;
 }
@@ -91,4 +90,9 @@ void HttpResponse::SetStatusCode(const int statusCode)
 {
   //Looks up the status code in the Constants namespace and sets it.
   statusAndCode = Constants::RESPONSE_CODES.find(statusCode)->second.c_str();
+}
+
+const char* HttpResponse::getStatusAndCode()
+{
+    return statusAndCode;
 }

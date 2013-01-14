@@ -8,20 +8,22 @@
 
 using namespace std;
 
-Log::Log(const char* logfile, pthread_mutex_t *mutex)
+Log::Log(const char* logfile, pthread_mutex_t *mutex, bool isVerbose)
 {
+    verbose = isVerbose;
     loglock = mutex;
     m_stream.open(logfile, ios::app);
-    if(!m_stream.is_open())
-    {
-	printf("Could not open logfile: %s\n",logfile);
-    }
-    else printf("%s opened for log.\n",logfile);
+    if(config::configValues["ERROR_VERBOSE"] == "true")
+        if(!m_stream.is_open())
+        {
+            cout << "Could not open logfile: " << logfile << endl;
+        }
+        else cout << logfile << " opened for log." << endl;
 }
 
 void Log::logException(char* exceptionThrown)
 {
-  m_stream << "Exception Thrown: " << getDateTime() << ": " << exceptionThrown << endl;
+    m_stream << "Exception Thrown: " << getDateTime() << ": " << exceptionThrown << endl;
 }
 
 void Log::writeLog(char* strToWrite)

@@ -23,7 +23,7 @@ class HttpProcessor{
   //Get the filename specified by the request
   //Returns a pointer to a new string. 
   //RETURN VALUE MUST BE FREED.
-  char* getFilename(char* requestFile);
+  char* getFilename(const char* requestFile) const;
 
   //Get the file extension of a file
   //DONT FREE! All we're really doing
@@ -37,7 +37,7 @@ class HttpProcessor{
   ~HttpProcessor();
 
   //Set the default page
-  void setDefaultPage(char* defaultPage);
+  void setDefaultPage(const char* defaultPage);
 
   //Generate a response object to send to the client
   void makeResponse(HttpResponse &response);
